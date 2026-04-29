@@ -3,7 +3,7 @@
 ## Integrantes
 
 - Maria Estefany Piedrahita Monsalve
-- 
+- Mateo Jimenez Duque
 ## Descripción del proyecto
 
 El proyecto consiste en el desarrollo de un sistema de biblioteca que permita organizar, consultar y administrar información relacionada con libros, usuarios y préstamos. La idea principal es crear una aplicación funcional que facilite el control básico de una biblioteca, permitiendo registrar libros disponibles, gestionar usuarios y llevar seguimiento de los préstamos realizados.
