@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de libros | Biblioteca Pública</title>
+
+  <link rel="stylesheet" href="../css/Encabezado.css">
+  <link rel="stylesheet" href="../css/libros.css">
+</head>
+
+<body>
+
+    <div id="header-placeholder"></div>
+
+  <main class="books-page">
+
+    <section class="books-panel">
+
+      <div class="panel-header">
+        <div>
+          <span class="module-label">Módulo de administración</span>
+          <h1>Catálogo de libros</h1>
+          <p>
+            Registra, visualiza, edita y elimina libros del sistema.
+            Cada registro incluye título, autor, categoría, año de publicación y estado.
+          </p>
+        </div>
+
+        <button class="btn-new-book" type="button">
+          + Nuevo libro
+        </button>
+      </div>
+
+      <section class="form-card">
+        <h2>Registrar libro</h2>
+        <p>Complete la información básica del libro para agregarlo al catálogo.</p>
+
+        <form class="book-form">
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="titulo">Título del libro</label>
+              <input type="text" id="titulo" name="titulo" placeholder="Ej: Cien años de soledad">
+            </div>
+
+            <div class="form-group">
+              <label for="autor">Autor</label>
+              <input type="text" id="autor" name="autor" placeholder="Ej: Gabriel García Márquez">
+            </div>
+
+            <div class="form-group">
+              <label for="categoria">Categoría</label>
+              <select id="categoria" name="categoria">
+                <option value="">Seleccione una categoría</option>
+                <option value="literatura">Literatura</option>
+                <option value="ciencia">Ciencia</option>
+                <option value="historia">Historia</option>
+                <option value="tecnologia">Tecnología</option>
+                <option value="educacion">Educación</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="anio">Año de publicación</label>
+              <input type="number" id="anio" name="anio" placeholder="Ej: 1967">
+            </div>
+
+            <div class="form-group">
+              <label for="estado">Estado</label>
+              <select id="estado" name="estado">
+                <option value="">Seleccione el estado</option>
+                <option value="disponible">Disponible</option>
+                <option value="prestado">Prestado</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Guardar libro</button>
+            <button type="reset" class="btn-clear">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="table-card">
+
+        <div class="table-top">
+          <div>
+            <h2>Libros registrados</h2>
+            <p>Consulta general del inventario de libros.</p>
+          </div>
+
+          <input type="text" class="search-input" placeholder="Buscar libro...">
+        </div>
+
+        <div class="table-wrapper">
+          <table class="books-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Título / Autor</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+                <th>Año</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>
+                  <strong>Cien años de soledad</strong>
+                  <span>Gabriel García Márquez</span>
+                </td>
+                <td>Literatura</td>
+                <td><span class="status available">Disponible</span></td>
+                <td>1967</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-edit">Editar</button>
+                    <button class="btn-delete">Eliminar</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>
+                  <strong>Breve historia del tiempo</strong>
+                  <span>Stephen Hawking</span>
+                </td>
+                <td>Ciencia</td>
+                <td><span class="status borrowed">Prestado</span></td>
+                <td>1988</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-edit">Editar</button>
+                    <button class="btn-delete">Eliminar</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>3</td>
+                <td>
+                  <strong>El principito</strong>
+                  <span>Antoine de Saint-Exupéry</span>
+                </td>
+                <td>Literatura</td>
+                <td><span class="status available">Disponible</span></td>
+                <td>1943</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-edit">Editar</button>
+                    <button class="btn-delete">Eliminar</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <script src="../js/header.js"></script>
+</body>
+</html>

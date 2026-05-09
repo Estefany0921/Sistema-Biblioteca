@@ -1,163 +1,136 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
+<html lang="en">
+<head><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Biblioteca</title>
+  <title>Biblioteca Pública | Sistema de Gestión</title>
 
   <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/Encabezado.css">
 </head>
 <body>
-<header class="header">
-  <nav class="navbar">
-    <div class="logo">
-      <div class="logo-box">
-        <img src="../img/logo.png" alt="Logo de la biblioteca" class="logo-icon">
+  <div id="header-placeholder"></div>
+      <section class="hero">
+
+      <div class="hero-bg-circles">
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+        <div class="circle c3"></div>
       </div>
-  
-        <!-- <img src="../img/logo.png" alt="Stylized open book with leaves grow0ing from its pages and the text biblioteca publica conocimiento y compromiso" class="logo-icon"> -->
-     
-          <!--<h1>Sistema de Biblioteca</h1>
-          <p>Sistema de gestión</p>-->
-        
 
-      <ul class="menu">
-        <li><a href="index.html" class="active">Inicio</a></li>
-        <li><a href="libros.html">Libros</a></li>
-        <li><a href="usuarios.html">Usuarios</a></li>
-        <li><a href="prestamos.html">Préstamos</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-
-    <section class="hero">
       <div class="hero-content">
-        <p class="tag">Proyecto final de desarrollo web</p>
+        <span class="hero-badge">Sistema de Gestión Bibliotecaria</span>
 
-        <h2>Sistema Web para la Gestión de una Biblioteca Escolar</h2>
+        <h1 class="hero-title">
+          Administra tu <span class="hero-highlight">biblioteca pública</span>
+          de forma sencilla y ordenada
+        </h1>
 
-        <p class="description">
-          Plataforma diseñada para organizar libros, registrar usuarios y controlar préstamos
-          de manera sencilla, ordenada y eficiente.
+        <p class="hero-desc">
+          Plataforma diseñada para registrar libros, gestionar usuarios y controlar préstamos,
+          permitiendo organizar la información de la biblioteca de manera clara, rápida y segura.
         </p>
 
-        <div class="hero-buttons">
-          <a href="libros.html" class="btn primary">Gestionar libros</a>
-          <a href="prestamos.html" class="btn secondary">Ver préstamos</a>
+        <div class="hero-actions">
+          <a href="libros.html" class="btn-primary">Gestionar libros</a>
+          <a href="prestamos.html" class="btn-secondary">Ver préstamos</a>
         </div>
       </div>
 
-      <div class="hero-card">
-        <h3>Resumen del sistema</h3>
+      <div class="hero-visual">
+        <div class="stats-card">
 
-        <div class="stat">
-          <span>Libros</span>
-          <strong>Registro y consulta</strong>
-        </div>
+          <div class="stat">
+            <span class="stat-number">120+</span>
+            <span class="stat-label">Libros registrados</span>
+          </div>
 
-        <div class="stat">
-          <span>Usuarios</span>
-          <strong>Control de lectores</strong>
-        </div>
+          <div class="stat-divider"></div>
 
-        <div class="stat">
-          <span>Préstamos</span>
-          <strong>Seguimiento de devoluciones</strong>
+          <div class="stat">
+            <span class="stat-number">45</span>
+            <span class="stat-label">Usuarios activos</span>
+          </div>
+
+          <div class="stat-divider"></div>
+
+          <div class="stat">
+            <span class="stat-number">18</span>
+            <span class="stat-label">Préstamos en curso</span>
+          </div>
+
         </div>
       </div>
+
     </section>
 
-    <section class="about">
-      <div class="section-title">
-        <h2>¿Qué permite hacer este sistema?</h2>
-        <p>
-          El proyecto busca reemplazar el control manual de una biblioteca por una solución web básica,
-          funcional y fácil de utilizar.
-        </p>
-      </div>
+    <section class="sections">
+      <h2 class="sections-title">Módulos principales</h2>
 
-      <div class="cards">
-        <article class="card">
-          <div class="card-number">01</div>
-          <h3>Gestión de libros</h3>
-          <p>
-            Permite registrar libros con datos como título, autor, categoría, año de publicación
-            y estado del ejemplar.
+      <div class="cards-grid">
+
+        <a href="libros.html" class="section-card">
+          <div class="card-icon books">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
+            </svg>
+          </div>
+
+          <h3 class="card-title">Gestión de libros</h3>
+          <p class="card-desc">
+            Registra, consulta, edita y elimina libros. Controla datos como título, autor,
+            categoría, año de publicación y estado del libro.
           </p>
-        </article>
+          <span class="card-link">Ir al módulo</span>
+        </a>
 
-        <article class="card">
-          <div class="card-number">02</div>
-          <h3>Registro de usuarios</h3>
-          <p>
-            Permite guardar la información básica de los estudiantes o personas que pueden solicitar
+        <a href="usuarios.html" class="section-card">
+          <div class="card-icon users">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+
+          <h3 class="card-title">Gestión de usuarios</h3>
+          <p class="card-desc">
+            Administra la información de las personas que hacen uso de la biblioteca y solicitan
             libros en préstamo.
           </p>
-        </article>
+          <span class="card-link">Ir al módulo</span>
+        </a>
 
-        <article class="card">
-          <div class="card-number">03</div>
-          <h3>Control de préstamos</h3>
-          <p>
-            Facilita el registro de préstamos, fechas de devolución y estado de cada libro prestado.
+        <a href="prestamos.html" class="section-card">
+          <div class="card-icon loans">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"></path>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+          </div>
+
+          <h3 class="card-title">Control de préstamos</h3>
+          <p class="card-desc">
+            Registra préstamos, fechas de devolución y estados para llevar seguimiento de los libros
+            entregados a los usuarios.
           </p>
-        </article>
-      </div>
-    </section>
+          <span class="card-link">Ir al módulo</span>
+        </a>
 
-    <section class="modules">
-      <div class="modules-content">
-        <h2>Módulos principales</h2>
-        <p>
-          El sistema estará dividido en secciones para facilitar la navegación y el manejo de la información.
-        </p>
-
-        <div class="module-list">
-          <a href="libros.html" class="module-item">
-            <span>Libros</span>
-            <small>Registrar, consultar y actualizar libros.</small>
-          </a>
-
-          <a href="usuarios.html" class="module-item">
-            <span>Usuarios</span>
-            <small>Registrar estudiantes o lectores.</small>
-          </a>
-
-          <a href="prestamos.html" class="module-item">
-            <span>Préstamos</span>
-            <small>Controlar entregas y devoluciones.</small>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="project-info">
-      <div>
-        <h2>Objetivo del proyecto</h2>
-        <p>
-          Desarrollar un sistema web funcional para la gestión básica de una biblioteca escolar,
-          aplicando conocimientos de HTML, CSS y JavaScript.
-        </p>
-      </div>
-
-      <div>
-        <h2>Tecnologías utilizadas</h2>
-        <ul>
-          <li>HTML5 para la estructura de las páginas.</li>
-          <li>CSS3 para el diseño visual y responsive.</li>
-          <li>JavaScript para la interacción del sistema.</li>
-          <li>GitHub para el control del proyecto.</li>
-        </ul>
       </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    <p>Sistema de Biblioteca Escolar | Proyecto final de desarrollo web</p>
+    <p>Biblioteca Pública | Sistema de Gestión</p>
   </footer>
 
+ 
+    <script src="/js/header.js"></script>
 </body>
 </html>
