@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Préstamos | Biblioteca Pública</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --p900: #160b30;
+      --p800: #1e1040;
+      --p700: #2d1a5e;
+      --p600: #3d2480;
+      --p500: #5c35b8;
+      --p400: #7c55d4;
+      --p300: #a282e8;
+      --p200: #c8b4f5;
+      --p100: #ede8fb;
+      --p50:  #f6f3fe;
+      --accent:      #7c55d4;
+      --accent-mid:  #9b59f5;
+      --accent-glow: rgba(124, 85, 212, 0.22);
+      --surface:   #ffffff;
+      --surface-2: #faf9fe;
+      --border:        #e8e2f8;
+      --border-strong: #cfc5ef;
+      --text-1: #1a0e35;
+      --text-2: #4f4070;
+      --text-3: #8e80aa;
+      --sh-sm: 0 1px 4px rgba(45,26,94,.07), 0 1px 2px rgba(45,26,94,.05);
+      --sh-md: 0 4px 18px rgba(45,26,94,.10), 0 2px 6px rgba(45,26,94,.06);
+      --sh-lg: 0 12px 40px rgba(45,26,94,.13), 0 4px 12px rgba(45,26,94,.07);
+      --sh-xl: 0 24px 64px rgba(45,26,94,.18), 0 8px 22px rgba(45,26,94,.10);
+      --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface-2);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--sh-sm);
+      padding: 0 7%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 62px; position: sticky; top: 0; z-index: 100;
+    }
+    .header-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700; color: var(--text-1);
+      text-decoration: none;
+    }
+    .header-brand-icon {
+      width: 34px; height: 34px; border-radius: var(--r-sm);
+      background: linear-gradient(135deg, var(--p600), var(--accent-mid));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    .header-brand-icon svg { width: 17px; height: 17px; color: #fff; }
+    .header-nav { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      font-size: 13.5px; font-weight: 500; color: var(--text-2);
+      padding: 6px 14px; border-radius: var(--r-sm);
+      text-decoration: none; transition: background .18s, color .18s;
+    }
+    .nav-link:hover  { background: var(--p50); color: var(--p500); }
+    .nav-link.active { background: var(--p100); color: var(--p500); font-weight: 600; }
+
+    /* ── PAGE ── */
+    .page-wrap {
+      padding: 52px 7% 88px;
+      flex: 1;
+      animation: fadeUp .5s cubic-bezier(.22,.68,0,1.1) both;
+    }
+
+    .page-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 24px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+
+    .eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .eyebrow-bar { width: 24px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--p500), transparent); }
+    .eyebrow-label { font-size: 11px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--p500); }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700; color: var(--text-1); line-height: 1.1; margin-bottom: 8px;
+    }
+    .page-title em { font-style: italic; color: var(--p500); }
+    .page-sub { font-size: 14px; color: var(--text-3); font-weight: 400; line-height: 1.6; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: var(--r-md);
+      background: linear-gradient(135deg, var(--p600) 0%, var(--accent-mid) 100%);
+      color: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600; border: none; cursor: pointer;
+      box-shadow: 0 8px 22px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.14);
+      transition: transform .18s, box-shadow .18s; text-decoration: none; white-space: nowrap;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px var(--accent-glow); }
+    .btn-primary svg { width: 16px; height: 16px; }
+
+    /* ── STATS ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 32px; }
+
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: var(--sh-sm); transition: box-shadow .2s, transform .2s;
+      animation: fadeUp .5s ease both; position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg,var(--p400),var(--accent-mid)); opacity: 0; transition: opacity .2s;
+    }
+    .stat-card:hover { box-shadow: var(--sh-md); transform: translateY(-2px); }
+    .stat-card:hover::after { opacity: 1; }
+    .stat-card:nth-child(2) { animation-delay: .07s; }
+    .stat-card:nth-child(3) { animation-delay: .14s; }
+    .stat-card:nth-child(4) { animation-delay: .21s; }
+
+    .stat-icon { width: 44px; height: 44px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stat-icon svg { width: 20px; height: 20px; }
+    .si-purple { background: var(--p100);  color: var(--p500); }
+    .si-blue   { background: #e8f4fd;      color: #2471a3; }
+    .si-green  { background: #edf9f3;      color: #15a361; }
+    .si-red    { background: #fdf0f0;      color: #c0392b; }
+    .si-orange { background: #fef6ec;      color: #d68910; }
+
+    .stat-num   { font-size: 28px; font-weight: 700; color: var(--text-1); line-height: 1; letter-spacing: -.5px; }
+    .stat-label { font-size: 12px; color: var(--text-3); font-weight: 500; margin-top: 3px; }
+
+    /* ── TABLE ── */
+    .table-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-xl); box-shadow: var(--sh-md);
+      overflow: hidden; animation: fadeUp .55s .1s ease both;
+    }
+
+    .table-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px; border-bottom: 1px solid var(--border); gap: 16px; flex-wrap: wrap;
+    }
+    .toolbar-title { font-size: 15px; font-weight: 700; color: var(--text-1); }
+    .toolbar-count { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+    .toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .filter-select {
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      color: var(--text-2); background: var(--surface-2);
+      border: 1.5px solid var(--border); border-radius: var(--r-md);
+      padding: 9px 14px; outline: none; cursor: pointer;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .filter-select:focus { border-color: var(--p300); box-shadow: 0 0 0 3px rgba(124,85,212,.1); }
+
+    .search-box {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface-2); border: 1.5px solid var(--border);
+      border-radius: var(--r-md); padding: 9px 14px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box:focus-within { border-color: var(--p300); box-shadow: 0 0 0 3px rgba(124,85,212,.1); }
+    .search-box svg { width: 15px; height: 15px; color: var(--text-3); flex-shrink: 0; }
+    .search-box input {
+      border: none; background: transparent; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 400; color: var(--text-1); outline: none; width: 200px;
+    }
+    .search-box input::placeholder { color: var(--text-3); }
+
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--surface-2); }
+    thead th {
+      text-align: left; padding: 12px 22px; font-size: 11px; font-weight: 700;
+      color: var(--text-3); letter-spacing: .9px; text-transform: uppercase;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid #f4f1fc; transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--p50); }
+    tbody td { padding: 14px 22px; font-size: 13.5px; color: var(--text-1); vertical-align: middle; }
+
+    /* libro cell */
+    .libro-cell { display: flex; align-items: center; gap: 12px; }
+    .libro-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--p600), var(--accent-mid));
+      color: #fff; font-size: 18px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      box-shadow: 0 3px 10px var(--accent-glow);
+    }
+    .l-title  { font-weight: 600; color: var(--text-1); font-size: 14px; }
+    .l-author { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+    /* usuario cell */
+    .avatar-sm {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--p500), var(--p300));
+      color: #fff; font-size: 11px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 8px; vertical-align: middle;
+      box-shadow: 0 2px 6px var(--accent-glow);
+    }
+
+    /* badges */
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .bdot  { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .b-activo    { background: #e8f4fd; color: #2471a3; }     .b-activo .bdot    { background: #2471a3; }
+    .b-devuelto  { background: #edf9f3; color: #15a361; }     .b-devuelto .bdot  { background: #15a361; }
+    .b-vencido   { background: #fdf0f0; color: #c0392b; }     .b-vencido .bdot   { background: #c0392b; }
+    .b-renovado  { background: #fef6ec; color: #d68910; }     .b-renovado .bdot  { background: #d68910; }
+
+    .td-muted { color: var(--text-2); }
+    .td-small { color: var(--text-3); font-size: 13px; }
+
+    /* fecha vencida */
+    .fecha-vencida { color: #c0392b; font-weight: 600; }
+
+    /* btn acción */
+    .btn-action {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: var(--r-sm);
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-2); cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .btn-action:hover { background: var(--p50); border-color: var(--p300); color: var(--p500); }
+    .btn-action svg { width: 13px; height: 13px; }
+    .btn-action.devolver:hover { background: #edf9f3; border-color: #7dcea0; color: #15a361; }
+
+    /* ── EMPTY ── */
+    .empty-state { text-align: center; padding: 72px 20px; }
+    .empty-icon { width: 54px; height: 54px; border-radius: 16px; background: var(--p50); color: var(--p300); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .empty-icon svg { width: 24px; height: 24px; }
+    .empty-title { font-size: 15px; font-weight: 600; color: var(--text-2); margin-bottom: 4px; }
+    .empty-desc  { font-size: 13px; color: var(--text-3); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(13,5,32,.58); backdrop-filter: blur(5px);
+      z-index: 2000; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.open { display: flex; animation: overlayIn .2s ease both; }
+    @keyframes overlayIn { from{opacity:0} to{opacity:1} }
+
+    .modal {
+      background: var(--surface); border-radius: var(--r-xl);
+      box-shadow: var(--sh-xl), 0 0 0 1px rgba(124,85,212,.14);
+      width: 100%; max-width: 520px; overflow: hidden;
+      animation: modalIn .3s cubic-bezier(.22,.68,0,1.2) both;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: translateY(28px) scale(.96); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-stripe { height: 3px; background: linear-gradient(90deg, var(--p600), var(--accent-mid), var(--p300)); }
+
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 28px 18px; border-bottom: 1px solid var(--border);
+    }
+    .modal-header-l { display: flex; align-items: center; gap: 14px; }
+    .modal-icon-box { width: 42px; height: 42px; border-radius: var(--r-md); background: var(--p100); display: flex; align-items: center; justify-content: center; }
+    .modal-icon-box svg { width: 20px; height: 20px; color: var(--p500); }
+    .modal-ttl { font-size: 17px; font-weight: 700; color: var(--text-1); }
+    .modal-sub { font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
+
+    .btn-close {
+      width: 34px; height: 34px; border-radius: var(--r-sm);
+      border: 1px solid var(--border); background: transparent;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); transition: background .18s, color .18s, border-color .18s;
+    }
+    .btn-close:hover { background: #fdf0f0; border-color: #f5c6c2; color: #c0392b; }
+    .btn-close svg { width: 15px; height: 15px; }
+
+    .modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; }
+    .form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+
+    .form-input, .form-select {
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400;
+      color: var(--text-1); background: var(--surface-2);
+      border: 1.5px solid var(--border); border-radius: var(--r-md);
+      padding: 10px 14px; outline: none; width: 100%;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--p300); box-shadow: 0 0 0 3px rgba(124,85,212,.12); background: var(--surface);
+    }
+    .form-input::placeholder { color: var(--text-3); }
+
+    .modal-footer { padding: 0 28px 24px; display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-cancel {
+      padding: 10px 20px; border-radius: var(--r-md);
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-2); font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px; font-weight: 600; cursor: pointer;
+      transition: background .18s, border-color .18s;
+    }
+    .btn-cancel:hover { background: var(--surface-2); border-color: var(--border-strong); }
+    .btn-save {
+      padding: 10px 24px; border-radius: var(--r-md); border: none;
+      background: linear-gradient(135deg, var(--p600), var(--accent-mid));
+      color: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 6px 18px var(--accent-glow);
+      transition: transform .18s, box-shadow .18s, opacity .18s;
+    }
+    .btn-save:hover { transform: translateY(-1px); box-shadow: 0 10px 24px var(--accent-glow); }
+    .btn-save:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px;
+      padding: 13px 20px; border-radius: var(--r-md);
+      font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 600; color: #fff;
+      box-shadow: var(--sh-lg); z-index: 3000; display: none;
+    }
+    .toast.success { background: linear-gradient(135deg,#15a361,#1dcd7c); }
+    .toast.error   { background: linear-gradient(135deg,#c0392b,#e04f3f); }
+    .toast.info    { background: linear-gradient(135deg,#2471a3,#3498db); }
+    .toast.show    { display: block; animation: toastIn .28s ease both; }
+    @keyframes toastIn {
+      from { opacity:0; transform: translateY(10px) scale(.97); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    .footer {
+      text-align: center; padding: 20px; font-size: 12px; color: var(--text-3);
+      border-top: 1px solid var(--border); background: var(--surface);
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 760px) {
+      .page-wrap  { padding: 32px 5% 60px; }
+      .stats-row  { grid-template-columns: 1fr 1fr; }
+      .form-row   { grid-template-columns: 1fr; }
+      .search-box input { width: 140px; }
+      .header-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="#" class="header-brand">
+      <div class="header-brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </div>
+      Biblioteca Pública
+    </a>
+    <nav class="header-nav">
+      <a href="#" class="nav-link">Inicio</a>
+      <a href="#" class="nav-link">Libros</a>
+      <a href="#" class="nav-link active">Préstamos</a>
+      <a href="#" class="nav-link">Usuarios</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <div class="eyebrow">
+          <div class="eyebrow-bar"></div>
+          <span class="eyebrow-label">Módulo de préstamos</span>
+        </div>
+        <h1 class="page-title">Gestión de <em>préstamos</em></h1>
+        <p class="page-sub">Registra y controla los préstamos de libros a los usuarios de la biblioteca.</p>
+      </div>
+      <button class="btn-primary" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nuevo préstamo
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon si-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <div><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total préstamos</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div><div class="stat-num" id="stat-activo" style="color:#2471a3">0</div><div class="stat-label">En curso</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div><div class="stat-num" id="stat-devuelto" style="color:#15a361">0</div><div class="stat-label">Devueltos</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div><div class="stat-num" id="stat-vencido" style="color:#c0392b">0</div><div class="stat-label">Vencidos</div></div>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-card">
+      <div class="table-toolbar">
+        <div>
+          <div class="toolbar-title">Registro de préstamos</div>
+          <div class="toolbar-count" id="toolbar-count">0 registros</div>
+        </div>
+        <div class="toolbar-right">
+          <select class="filter-select" id="filter-estado" onchange="filterTable()">
+            <option value="">Todos los estados</option>
+            <option value="activo">En curso</option>
+            <option value="devuelto">Devueltos</option>
+            <option value="vencido">Vencidos</option>
+            <option value="renovado">Renovados</option>
+          </select>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="search-box" placeholder="Buscar libro o usuario..." oninput="filterTable()">
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Libro</th>
+              <th>Usuario</th>
+              <th>Fecha préstamo</th>
+              <th>Fecha devolución</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="prestamos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-stripe"></div>
+      <div class="modal-header">
+        <div class="modal-header-l">
+          <div class="modal-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="modal-ttl">Registrar préstamo</div>
+            <div class="modal-sub">Completa los datos del nuevo préstamo</div>
+          </div>
+        </div>
+        <button class="btn-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="in-libro">Título del libro</label>
+          <input class="form-input" id="in-libro" type="text" placeholder="Ej: Cien años de soledad">
+        </div>
+        <div class="form-group">
+          <label for="in-autor">Autor</label>
+          <input class="form-input" id="in-autor" type="text" placeholder="Ej: Gabriel García Márquez">
+        </div>
+        <div class="form-group">
+          <label for="in-usuario">Usuario</label>
+          <input class="form-input" id="in-usuario" type="text" placeholder="Nombre del usuario">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="in-fecha-prestamo">Fecha de préstamo</label>
+            <input class="form-input" id="in-fecha-prestamo" type="date">
+          </div>
+          <div class="form-group">
+            <label for="in-fecha-devolucion">Fecha de devolución</label>
+            <input class="form-input" id="in-fecha-devolucion" type="date">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="in-estado">Estado</label>
+          <select class="form-select" id="in-estado">
+            <option value="activo">En curso</option>
+            <option value="devuelto">Devuelto</option>
+            <option value="vencido">Vencido</option>
+            <option value="renovado">Renovado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-save" id="btn-save" onclick="savePrestamo()">Guardar préstamo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">Biblioteca Pública &mdash; Sistema de Gestión</footer>
+
+  <script>
+    // ── Datos de ejemplo ──────────────────────────────────────────────────────
+    let allPrestamos = [
+      { libro: 'Cien años de soledad',      autor: 'Gabriel García Márquez', usuario: 'María García',     fecha_prestamo: '2026-04-10', fecha_devolucion: '2026-04-24', estado: 'devuelto'  },
+      { libro: 'El principito',             autor: 'Antoine de Saint-Exupéry', usuario: 'Carlos Rodríguez', fecha_prestamo: '2026-04-20', fecha_devolucion: '2026-05-04', estado: 'devuelto'  },
+      { libro: 'Don Quijote de la Mancha',  autor: 'Miguel de Cervantes',    usuario: 'Lucía Martínez',   fecha_prestamo: '2026-04-28', fecha_devolucion: '2026-05-12', estado: 'activo'    },
+      { libro: '1984',                       autor: 'George Orwell',          usuario: 'Andrés López',     fecha_prestamo: '2026-04-15', fecha_devolucion: '2026-04-29', estado: 'vencido'   },
+      { libro: 'Rayuela',                    autor: 'Julio Cortázar',         usuario: 'Valentina Pérez',  fecha_prestamo: '2026-05-01', fecha_devolucion: '2026-05-15', estado: 'activo'    },
+      { libro: 'La sombra del viento',       autor: 'Carlos Ruiz Zafón',      usuario: 'Daniela Torres',   fecha_prestamo: '2026-04-05', fecha_devolucion: '2026-04-19', estado: 'vencido'   },
+      { libro: 'Ficciones',                  autor: 'Jorge Luis Borges',      usuario: 'Jorge Herrera',    fecha_prestamo: '2026-05-03', fecha_devolucion: '2026-05-17', estado: 'renovado'  },
+      { libro: 'El amor en los tiempos del cólera', autor: 'Gabriel García Márquez', usuario: 'María García', fecha_prestamo: '2026-05-06', fecha_devolucion: '2026-05-20', estado: 'activo' },
+    ];
+
+    // ── Utilidades ────────────────────────────────────────────────────────────
+    function fmtFecha(f) {
+      if (!f) return '—';
+      return new Date(f).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function esVencida(fecha, estado) {
+      if (estado === 'devuelto') return false;
+      return fecha && new Date(fecha) < new Date();
+    }
+
+    function initiales(nombre) {
+      return nombre.split(' ').slice(0,2).map(p => p[0]).join('').toUpperCase();
+    }
+
+    function badgeClass(estado) {
+      return { activo: 'b-activo', devuelto: 'b-devuelto', vencido: 'b-vencido', renovado: 'b-renovado' }[estado] || 'b-activo';
+    }
+
+    function badgeLabel(estado) {
+      return { activo: 'En curso', devuelto: 'Devuelto', vencido: 'Vencido', renovado: 'Renovado' }[estado] || estado;
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
+    function renderTable(list) {
+      document.getElementById('toolbar-count').textContent = `${list.length} registro${list.length !== 1 ? 's' : ''}`;
+      const tbody = document.getElementById('prestamos-tbody');
+
+      if (!list.length) {
+        tbody.innerHTML = emptyHTML('Sin resultados', 'No hay préstamos que coincidan con el filtro.');
+        return;
+      }
+
+      tbody.innerHTML = list.map((p, idx) => {
+        const vencida  = esVencida(p.fecha_devolucion, p.estado);
+        const emoji    = ['📗','📘','📕','📙','📒'][idx % 5];
+        const devClase = vencida ? 'fecha-vencida' : 'td-small';
+        const mostrarDevolver = p.estado === 'activo' || p.estado === 'vencido' || p.estado === 'renovado';
+
+        return `<tr>
+          <td><div class="libro-cell">
+            <div class="libro-icon">${emoji}</div>
+            <div>
+              <div class="l-title">${p.libro}</div>
+              <div class="l-author">${p.autor}</div>
+            </div>
+          </div></td>
+          <td class="td-muted">
+            <span class="avatar-sm">${initiales(p.usuario)}</span>${p.usuario}
+          </td>
+          <td class="td-small">${fmtFecha(p.fecha_prestamo)}</td>
+          <td class="${devClase}">${fmtFecha(p.fecha_devolucion)}${vencida ? ' ⚠' : ''}</td>
+          <td><span class="badge ${badgeClass(p.estado)}"><span class="bdot"></span>${badgeLabel(p.estado)}</span></td>
+          <td>
+            ${mostrarDevolver
+              ? `<button class="btn-action devolver" onclick="marcarDevuelto(${allPrestamos.indexOf(p)})">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Devolver
+                </button>`
+              : `<span style="font-size:12px;color:var(--text-3)">—</span>`
+            }
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function emptyHTML(title, desc) {
+      return `<tr><td colspan="6"><div class="empty-state">
+        <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="empty-title">${title}</div><div class="empty-desc">${desc}</div>
+      </div></td></tr>`;
+    }
+
+    function updateStats(list) {
+      document.getElementById('stat-total').textContent    = list.length;
+      document.getElementById('stat-activo').textContent   = list.filter(p => p.estado === 'activo' || p.estado === 'renovado').length;
+      document.getElementById('stat-devuelto').textContent = list.filter(p => p.estado === 'devuelto').length;
+      document.getElementById('stat-vencido').textContent  = list.filter(p => p.estado === 'vencido').length;
+    }
+
+    function filterTable() {
+      const q      = document.getElementById('search-box').value.toLowerCase().trim();
+      const estado = document.getElementById('filter-estado').value;
+      let filtered = allPrestamos;
+      if (estado)  filtered = filtered.filter(p => p.estado === estado);
+      if (q)       filtered = filtered.filter(p =>
+        p.libro.toLowerCase().includes(q) ||
+        p.autor.toLowerCase().includes(q) ||
+        p.usuario.toLowerCase().includes(q)
+      );
+      renderTable(filtered);
+    }
+
+    // ── Devolver ──────────────────────────────────────────────────────────────
+    function marcarDevuelto(idx) {
+      allPrestamos[idx].estado = 'devuelto';
+      allPrestamos[idx].fecha_devolucion = new Date().toISOString().slice(0, 10);
+      renderTable(allPrestamos);
+      updateStats(allPrestamos);
+      showToast('Préstamo marcado como devuelto.', 'success');
+    }
+
+    // ── Modal ─────────────────────────────────────────────────────────────────
+    function openModal() {
+      // Poner fecha de hoy y devolución a 14 días
+      const hoy  = new Date();
+      const dev  = new Date(); dev.setDate(dev.getDate() + 14);
+      document.getElementById('in-fecha-prestamo').value   = hoy.toISOString().slice(0,10);
+      document.getElementById('in-fecha-devolucion').value = dev.toISOString().slice(0,10);
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      clearForm();
+    }
+    function handleOverlayClick(e) { if (e.target.id === 'modal-overlay') closeModal(); }
+    function clearForm() {
+      ['in-libro','in-autor','in-usuario','in-fecha-prestamo','in-fecha-devolucion'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('in-estado').value = 'activo';
+    }
+
+    function savePrestamo() {
+      const libro            = document.getElementById('in-libro').value.trim();
+      const autor            = document.getElementById('in-autor').value.trim();
+      const usuario          = document.getElementById('in-usuario').value.trim();
+      const fecha_prestamo   = document.getElementById('in-fecha-prestamo').value;
+      const fecha_devolucion = document.getElementById('in-fecha-devolucion').value;
+      const estado           = document.getElementById('in-estado').value;
+
+      if (!libro || !usuario || !fecha_prestamo || !fecha_devolucion) {
+        showToast('Completa los campos obligatorios.', 'error');
+        return;
+      }
+
+      allPrestamos.unshift({ libro, autor, usuario, fecha_prestamo, fecha_devolucion, estado });
+      renderTable(allPrestamos);
+      updateStats(allPrestamos);
+      showToast('Préstamo registrado correctamente.', 'success');
+      closeModal();
+    }
+
+    // ── Toast ─────────────────────────────────────────────────────────────────
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      setTimeout(() => { t.className = 'toast'; }, 3200);
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    renderTable(allPrestamos);
+    updateStats(allPrestamos);
+  </script>
+</body>
+</html>

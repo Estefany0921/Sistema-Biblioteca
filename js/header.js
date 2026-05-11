@@ -1,4 +1,4 @@
-fetch('/html/encabezado.html')
+fetch('./html/encabezado.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('header-placeholder').innerHTML = html;
@@ -10,7 +10,7 @@ fetch('/html/encabezado.html')
       
       const linkHref = link.getAttribute('href');
       
-      if (window.location.pathname.includes(linkHref.replace('/html/', ''))) {
+      if (window.location.pathname.includes(linkHref.replace('html/', ''))) {
         link.classList.add('active');
       }
     });
