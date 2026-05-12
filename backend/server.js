@@ -174,3 +174,71 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en http://localhost:${PORT}`);
 });
+/* ============================
+   RUTAS DE USUARIOS
+   ============================ */
+
+/* MOSTRAR USUARIOS */
+app.get("/usuarios", async (req, res) => {
+  try {
+    const resultado = await db.execute(`
+      SELECT id, nombre, documento, email, telefono, direccion, estado
+      FROM usuarios
+      ORDER BY id DESC
+    `);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al consultar usuarios:", error);
+    res.status(500).json({ error: "Error al consultar usuarios" });
+  }
+});
+
+/* REGISTRAR USUARIO */
+app.post("/usuarios", async (req, res) => {
+  try {
+    const { nombre, documento, email, telefono, direccion, estado } = req.body;
+
+    if (!nombre || !documento) {
+      return res.status(400).json({ error: "Nombre y documento son obligatorios" });
+    }
+
+    await db.execute({
+      sql: `
+        INSERT INTO usuarios
+        (nombre, documento, email, telefono, direccion, estado)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      args: [
+        nombre,
+        documento,
+        email || "",
+        telefono || "",
+        direccion || "",
+        estado || "activo"
+      ],
+    });
+
+    res.json({ mensaje: "Usuario registrado correctamente" });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    res.status(500).json({ error: "Error al registrar usuario" });
+  }
+});
+
+/* ELIMINAR USUARIO */
+app.delete("/usuarios/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await db.execute({
+      sql: "DELETE FROM usuarios WHERE id = ?",
+      args: [id],
+    });
+
+    res.json({ mensaje: "Usuario eliminado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al eliminar usuario" });
+  }
+});

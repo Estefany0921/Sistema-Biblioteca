@@ -1,17 +1,19 @@
-fetch('./html/encabezado.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('header-placeholder').innerHTML = html;
+fetch("encabezado.html")
+  .then(respuesta => respuesta.text())
+  .then(data => {
+    document.getElementById("header-placeholder").innerHTML = data;
 
-    const links = document.querySelectorAll('.nav-link');
-    
-    links.forEach(link => {
-      link.classList.remove('active'); // limpia cualquier active primero
-      
-      const linkHref = link.getAttribute('href');
-      
-      if (window.location.pathname.includes(linkHref.replace('html/', ''))) {
-        link.classList.add('active');
+    const paginaActual = window.location.pathname.split("/").pop();
+    const enlaces = document.querySelectorAll(".nav-link");
+
+    enlaces.forEach(enlace => {
+      enlace.classList.remove("active");
+
+      if (enlace.getAttribute("href") === paginaActual) {
+        enlace.classList.add("active");
       }
     });
+  })
+  .catch(error => {
+    console.error("Error cargando el encabezado:", error);
   });

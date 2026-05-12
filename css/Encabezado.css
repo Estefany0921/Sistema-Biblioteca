@@ -1,5 +1,23 @@
-/* ENCABEZADO PROFESIONAL */
+/* ENCABEZADO  */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+.main-header {
+  font-family: 'DM Sans', sans-serif;
+}
 
+.header-title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+}
+
+.header-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+.nav-link {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+}
 .main-header {
   width: 100%;
   background-color: #ffffff;
