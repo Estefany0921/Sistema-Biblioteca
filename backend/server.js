@@ -242,8 +242,8 @@ app.delete("/usuarios/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar usuario" });
   }
 });
-/* CAMBIAR USUARIO A INACTIVO */
-app.put("/usuarios/:id/inactivar", async (req, res) => {
+/* DESACTIVAR USUARIO */
+app.put("/usuarios/:id/desactivar", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -256,10 +256,10 @@ app.put("/usuarios/:id/inactivar", async (req, res) => {
       args: [id],
     });
 
-    res.json({ mensaje: "Usuario inactivado correctamente" });
+    res.json({ mensaje: "Usuario desactivado correctamente" });
   } catch (error) {
-    console.error("Error al inactivar usuario:", error);
-    res.status(500).json({ error: "Error al inactivar usuario" });
+    console.error("Error al desactivar usuario:", error);
+    res.status(500).json({ error: "Error al desactivar usuario" });
   }
 });
 /* ACTIVAR USUARIO */

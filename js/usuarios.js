@@ -289,3 +289,28 @@ async function activarUsuario(id) {
     showToast("No se pudo conectar con el backend.", "error");
   }
 }
+async function desactivarUsuario(id) {
+  const confirmar = confirm("¿Deseas desactivar este usuario?");
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/desactivar`, {
+      method: "PUT"
+    });
+
+    const data = await respuesta.json();
+
+    if (!respuesta.ok) {
+      showToast(data.error || "Error al desactivar usuario.", "error");
+      return;
+    }
+
+    showToast("Usuario desactivado correctamente.", "success");
+    cargarUsuarios();
+
+  } catch (error) {
+    console.error("Error al desactivar usuario:", error);
+    showToast("No se pudo conectar con el backend.", "error");
+  }
+}
