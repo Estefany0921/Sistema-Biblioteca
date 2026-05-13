@@ -72,6 +72,15 @@ function renderTable(users) {
         </td>
 
         <td class="td-small">—</td>
+        <td>
+   ${
+    u.estado === "activo"
+      ? `<button class="btn-disable-user" onclick="desactivarUsuario(${u.id})">Desactivar</button>`
+      : `<button class="btn-enable-user" onclick="activarUsuario(${u.id})">Activar</button>`
+  }
+   
+  </button>
+</td>
       </tr>
     `;
   }).join("");
@@ -80,7 +89,7 @@ function renderTable(users) {
 function emptyHTML(title, desc) {
   return `
     <tr>
-      <td colspan="5">
+      <td colspan="6">
         <div class="empty-state">
           <div class="empty-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
@@ -229,4 +238,54 @@ function showToast(msg, type = "success") {
   setTimeout(() => {
     t.className = "toast";
   }, 3200);
+}
+async function eliminarUsuario(id) {
+  const confirmar = confirm("¿Deseas inactivar este usuario?");
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/inactivar`, {
+      method: "PUT"
+    });
+
+    const data = await respuesta.json();
+
+    if (!respuesta.ok) {
+      showToast(data.error || "Error al inactivar usuario.", "error");
+      return;
+    }
+
+    showToast("Usuario inactivado correctamente.", "success");
+    cargarUsuarios();
+
+  } catch (error) {
+    console.error("Error al inactivar usuario:", error);
+    showToast("No se pudo conectar con el backend.", "error");
+  }
+}
+async function activarUsuario(id) {
+  const confirmar = confirm("¿Deseas activar este usuario?");
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/activar`, {
+      method: "PUT"
+    });
+
+    const data = await respuesta.json();
+
+    if (!respuesta.ok) {
+      showToast(data.error || "Error al activar usuario.", "error");
+      return;
+    }
+
+    showToast("Usuario activado correctamente.", "success");
+    cargarUsuarios();
+
+  } catch (error) {
+    console.error("Error al activar usuario:", error);
+    showToast("No se pudo conectar con el backend.", "error");
+  }
 }

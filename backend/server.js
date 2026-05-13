@@ -242,3 +242,212 @@ app.delete("/usuarios/:id", async (req, res) => {
     res.status(500).json({ error: "Error al eliminar usuario" });
   }
 });
+/* CAMBIAR USUARIO A INACTIVO */
+app.put("/usuarios/:id/inactivar", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await db.execute({
+      sql: `
+        UPDATE usuarios
+        SET estado = 'inactivo'
+        WHERE id = ?
+      `,
+      args: [id],
+    });
+
+    res.json({ mensaje: "Usuario inactivado correctamente" });
+  } catch (error) {
+    console.error("Error al inactivar usuario:", error);
+    res.status(500).json({ error: "Error al inactivar usuario" });
+  }
+});
+/* ACTIVAR USUARIO */
+app.put("/usuarios/:id/activar", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await db.execute({
+      sql: `
+        UPDATE usuarios
+        SET estado = 'activo'
+        WHERE id = ?
+      `,
+      args: [id],
+    });
+
+    res.json({ mensaje: "Usuario activado correctamente" });
+  } catch (error) {
+    console.error("Error al activar usuario:", error);
+    res.status(500).json({ error: "Error al activar usuario" });
+  }
+});
+/* ============================
+   RUTAS DE PRÉSTAMOS
+   ============================ */
+
+/* MOSTRAR PRÉSTAMOS */
+app.get("/prestamos", async (req, res) => {
+  try {
+    const resultado = await db.execute(`
+      SELECT 
+        p.id,
+        p.usuario_id,
+        p.ejemplar_id,
+        p.fecha_prestamo,
+        p.fecha_devolucion_estimada,
+        p.fecha_devolucion_real,
+        p.estado,
+        p.observaciones,
+        u.nombre AS usuario,
+        l.titulo AS libro,
+        l.autor AS autor,
+        e.codigo AS codigo_ejemplar
+      FROM prestamos p
+      INNER JOIN usuarios u ON p.usuario_id = u.id
+      INNER JOIN ejemplares e ON p.ejemplar_id = e.id
+      INNER JOIN libros l ON e.libro_id = l.id
+      ORDER BY p.id DESC
+    `);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al consultar préstamos:", error);
+    res.status(500).json({ error: "Error al consultar préstamos" });
+  }
+});
+
+
+/* CARGAR USUARIOS ACTIVOS PARA EL SELECT */
+app.get("/usuarios-activos", async (req, res) => {
+  try {
+    const resultado = await db.execute(`
+      SELECT id, nombre, documento
+      FROM usuarios
+      WHERE estado = 'activo'
+      ORDER BY nombre ASC
+    `);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al consultar usuarios activos:", error);
+    res.status(500).json({ error: "Error al consultar usuarios activos" });
+  }
+});
+
+
+/* CARGAR EJEMPLARES DISPONIBLES PARA EL SELECT */
+app.get("/ejemplares-disponibles", async (req, res) => {
+  try {
+    const resultado = await db.execute(`
+      SELECT 
+        e.id AS ejemplar_id,
+        e.codigo,
+        e.estado,
+        l.titulo,
+        l.autor
+      FROM ejemplares e
+      INNER JOIN libros l ON e.libro_id = l.id
+      WHERE e.estado = 'disponible'
+      ORDER BY l.titulo ASC
+    `);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al consultar ejemplares disponibles:", error);
+    res.status(500).json({ error: "Error al consultar ejemplares disponibles" });
+  }
+});
+
+
+/* REGISTRAR PRÉSTAMO */
+app.post("/prestamos", async (req, res) => {
+  try {
+    const {
+      usuario_id,
+      ejemplar_id,
+      fecha_prestamo,
+      fecha_devolucion_estimada,
+      estado,
+      observaciones
+    } = req.body;
+
+    if (!usuario_id || !ejemplar_id || !fecha_prestamo || !fecha_devolucion_estimada) {
+      return res.status(400).json({ error: "Faltan datos obligatorios del préstamo" });
+    }
+
+    await db.execute({
+      sql: `
+        INSERT INTO prestamos
+        (
+          usuario_id,
+          ejemplar_id,
+          fecha_prestamo,
+          fecha_devolucion_estimada,
+          fecha_devolucion_real,
+          estado,
+          observaciones
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `,
+      args: [
+        usuario_id,
+        ejemplar_id,
+        fecha_prestamo,
+        fecha_devolucion_estimada,
+        null,
+        estado || "activo",
+        observaciones || ""
+      ]
+    });
+
+    await db.execute({
+      sql: `
+        UPDATE ejemplares
+        SET estado = 'prestado'
+        WHERE id = ?
+      `,
+      args: [ejemplar_id]
+    });
+
+    res.json({ mensaje: "Préstamo registrado correctamente" });
+  } catch (error) {
+    console.error("Error al registrar préstamo:", error);
+    res.status(500).json({ error: "Error al registrar préstamo" });
+  }
+});
+
+
+/* MARCAR PRÉSTAMO COMO DEVUELTO */
+app.put("/prestamos/:id/devolver", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { ejemplar_id } = req.body;
+
+    const fechaHoy = new Date().toISOString().slice(0, 10);
+
+    await db.execute({
+      sql: `
+        UPDATE prestamos
+        SET estado = 'devuelto',
+            fecha_devolucion_real = ?
+        WHERE id = ?
+      `,
+      args: [fechaHoy, id]
+    });
+
+    await db.execute({
+      sql: `
+        UPDATE ejemplares
+        SET estado = 'disponible'
+        WHERE id = ?
+      `,
+      args: [ejemplar_id]
+    });
+
+    res.json({ mensaje: "Préstamo marcado como devuelto" });
+  } catch (error) {
+    console.error("Error al devolver préstamo:", error);
+    res.status(500).json({ error: "Error al devolver préstamo" });
+  }
+});

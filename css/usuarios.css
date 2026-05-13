@@ -586,3 +586,39 @@
       .form-row   { grid-template-columns: 1fr; }
       .search-box input { width: 150px; }
     }
+    .btn-enable-user {
+  border: none;
+  background: #edf9f3;
+  color: #15a361;
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-enable-user:hover {
+  background: #15a361;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-disable-user {
+  border: none;
+  background: #fdf0f0;
+  color: #c0392b;
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-disable-user:hover {
+  background: #c0392b;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
