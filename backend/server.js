@@ -7,7 +7,15 @@ import { fileURLToPath } from "url";
 
 import dotenv from "dotenv";
 import { createClient } from "@libsql/client";
+import cors from "cors";
 
+app.use(cors());
+app.use(express.json());
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en el puerto ${PORT}`);
+});
 dotenv.config();
 
 const db = createClient({
