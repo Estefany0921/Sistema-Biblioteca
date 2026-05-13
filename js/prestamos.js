@@ -1,6 +1,6 @@
-const API_PRESTAMOS = "http://localhost:3000/prestamos";
-const API_USUARIOS_ACTIVOS = "http://localhost:3000/usuarios-activos";
-const API_EJEMPLARES_DISPONIBLES = "http://localhost:3000/ejemplares-disponibles";
+const API_PRESTAMOS = "https://biblioteca-backend.onrender.com/prestamos";
+const API_USUARIOS_ACTIVOS = "https://biblioteca-backend.onrender.com/usuarios-activos";
+const API_EJEMPLARES_DISPONIBLES = "https://biblioteca-backend.onrender.com/ejemplares-disponibles";
 
 let allPrestamos = [];
 
