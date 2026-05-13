@@ -5,20 +5,15 @@ import { createClient } from "@libsql/client";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import dotenv from "dotenv";
+import { createClient } from "@libsql/client";
+
 dotenv.config();
-
-const app = express();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "..")));
 
 const db = createClient({
   url: process.env.TURSO_DATABASE_URL,
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
-
 app.get("/", (req, res) => {
   res.send("Backend de Biblioteca funcionando");
 });
