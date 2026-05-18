@@ -1,34 +1,31 @@
-
-import path from "path";
-import { fileURLToPath } from "url";
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { createClient } from "@libsql/client";
 
+dotenv.config();
+
+const app = express();
+
 app.use(cors());
 app.use(express.json());
-const PORT = process.env.PORT || 3000;
-
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Servidor funcionando en http://localhost:${PORT}`);
-  });
-}
-app.get("/", (req, res) => {
-  res.json({ mensaje: "Backend funcionando correctamente" });
-});
-export default app;
-dotenv.config();
 
 const db = createClient({
   url: process.env.TURSO_DATABASE_URL,
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
+
+/* ============================
+   RUTA DE PRUEBA
+   ============================ */
+
 app.get("/", (req, res) => {
-  res.send("Backend de Biblioteca funcionando");
+  res.json({ mensaje: "Backend de Biblioteca funcionando correctamente" });
 });
+
+/* ============================
+   RUTAS DE LIBROS
+   ============================ */
 
 /* MOSTRAR LIBROS */
 app.get("/libros", async (req, res) => {
@@ -55,7 +52,7 @@ app.get("/libros", async (req, res) => {
 
     res.json(resultado.rows);
   } catch (error) {
-    console.error(error);
+    console.error("Error al consultar libros:", error);
     res.status(500).json({ error: "Error al consultar libros" });
   }
 });
@@ -93,7 +90,7 @@ app.post("/libros", async (req, res) => {
 
     res.json({ mensaje: "Libro registrado correctamente" });
   } catch (error) {
-    console.error(error);
+    console.error("Error al registrar libro:", error);
     res.status(500).json({ error: "Error al registrar libro" });
   }
 });
@@ -139,7 +136,7 @@ app.put("/libros/:id", async (req, res) => {
 
     res.json({ mensaje: "Libro actualizado correctamente" });
   } catch (error) {
-    console.error(error);
+    console.error("Error al editar libro:", error);
     res.status(500).json({ error: "Error al editar libro" });
   }
 });
@@ -171,13 +168,12 @@ app.delete("/libros/:id", async (req, res) => {
 
     res.json({ mensaje: "Libro eliminado correctamente" });
   } catch (error) {
-    console.error(error);
+    console.error("Error al eliminar libro:", error);
     res.status(500).json({ error: "Error al eliminar libro" });
   }
 });
 
-
-/* ==========================
+/* ============================
    RUTAS DE USUARIOS
    ============================ */
 
@@ -218,7 +214,7 @@ app.post("/usuarios", async (req, res) => {
         email || "",
         telefono || "",
         direccion || "",
-        estado || "activo"
+        estado || "activo",
       ],
     });
 
@@ -241,10 +237,11 @@ app.delete("/usuarios/:id", async (req, res) => {
 
     res.json({ mensaje: "Usuario eliminado correctamente" });
   } catch (error) {
-    console.error(error);
+    console.error("Error al eliminar usuario:", error);
     res.status(500).json({ error: "Error al eliminar usuario" });
   }
 });
+
 /* DESACTIVAR USUARIO */
 app.put("/usuarios/:id/desactivar", async (req, res) => {
   try {
@@ -265,6 +262,7 @@ app.put("/usuarios/:id/desactivar", async (req, res) => {
     res.status(500).json({ error: "Error al desactivar usuario" });
   }
 });
+
 /* ACTIVAR USUARIO */
 app.put("/usuarios/:id/activar", async (req, res) => {
   try {
@@ -285,6 +283,7 @@ app.put("/usuarios/:id/activar", async (req, res) => {
     res.status(500).json({ error: "Error al activar usuario" });
   }
 });
+
 /* ============================
    RUTAS DE PRÉSTAMOS
    ============================ */
@@ -320,8 +319,7 @@ app.get("/prestamos", async (req, res) => {
   }
 });
 
-
-/* CARGAR USUARIOS ACTIVOS PARA EL SELECT */
+/* CARGAR USUARIOS ACTIVOS PARA SELECT */
 app.get("/usuarios-activos", async (req, res) => {
   try {
     const resultado = await db.execute(`
@@ -338,8 +336,7 @@ app.get("/usuarios-activos", async (req, res) => {
   }
 });
 
-
-/* CARGAR EJEMPLARES DISPONIBLES PARA EL SELECT */
+/* CARGAR EJEMPLARES DISPONIBLES PARA SELECT */
 app.get("/ejemplares-disponibles", async (req, res) => {
   try {
     const resultado = await db.execute(`
@@ -362,7 +359,6 @@ app.get("/ejemplares-disponibles", async (req, res) => {
   }
 });
 
-
 /* REGISTRAR PRÉSTAMO */
 app.post("/prestamos", async (req, res) => {
   try {
@@ -372,7 +368,7 @@ app.post("/prestamos", async (req, res) => {
       fecha_prestamo,
       fecha_devolucion_estimada,
       estado,
-      observaciones
+      observaciones,
     } = req.body;
 
     if (!usuario_id || !ejemplar_id || !fecha_prestamo || !fecha_devolucion_estimada) {
@@ -400,8 +396,8 @@ app.post("/prestamos", async (req, res) => {
         fecha_devolucion_estimada,
         null,
         estado || "activo",
-        observaciones || ""
-      ]
+        observaciones || "",
+      ],
     });
 
     await db.execute({
@@ -410,7 +406,7 @@ app.post("/prestamos", async (req, res) => {
         SET estado = 'prestado'
         WHERE id = ?
       `,
-      args: [ejemplar_id]
+      args: [ejemplar_id],
     });
 
     res.json({ mensaje: "Préstamo registrado correctamente" });
@@ -420,12 +416,15 @@ app.post("/prestamos", async (req, res) => {
   }
 });
 
-
 /* MARCAR PRÉSTAMO COMO DEVUELTO */
 app.put("/prestamos/:id/devolver", async (req, res) => {
   try {
     const { id } = req.params;
     const { ejemplar_id } = req.body;
+
+    if (!ejemplar_id) {
+      return res.status(400).json({ error: "Falta el ejemplar_id" });
+    }
 
     const fechaHoy = new Date().toISOString().slice(0, 10);
 
@@ -436,7 +435,7 @@ app.put("/prestamos/:id/devolver", async (req, res) => {
             fecha_devolucion_real = ?
         WHERE id = ?
       `,
-      args: [fechaHoy, id]
+      args: [fechaHoy, id],
     });
 
     await db.execute({
@@ -445,7 +444,7 @@ app.put("/prestamos/:id/devolver", async (req, res) => {
         SET estado = 'disponible'
         WHERE id = ?
       `,
-      args: [ejemplar_id]
+      args: [ejemplar_id],
     });
 
     res.json({ mensaje: "Préstamo marcado como devuelto" });
@@ -454,3 +453,17 @@ app.put("/prestamos/:id/devolver", async (req, res) => {
     res.status(500).json({ error: "Error al devolver préstamo" });
   }
 });
+
+/* ============================
+   CONFIGURACIÓN FINAL
+   ============================ */
+
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+  });
+}
+
+export default app;
