@@ -1,4 +1,5 @@
-const API_LIBROS = "https://sistema-biblioteca-out.vercel.app/libros";
+const API_URL = "https://sistema-biblioteca-out.vercel.app/libros";
+
 const bookForm = document.getElementById("bookForm");
 const booksBody = document.getElementById("booksBody");
 
