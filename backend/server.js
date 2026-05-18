@@ -1,13 +1,11 @@
+
+import path from "path";
+import { fileURLToPath } from "url";
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { createClient } from "@libsql/client";
-import path from "path";
-import { fileURLToPath } from "url";
-
-import dotenv from "dotenv";
-import { createClient } from "@libsql/client";
-import cors from "cors";
 
 app.use(cors());
 app.use(express.json());
