@@ -1,0 +1,59 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "html/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "css/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "js/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "img/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/libros(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/usuarios(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/prestamos(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/usuarios-activos(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/ejemplares-disponibles(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

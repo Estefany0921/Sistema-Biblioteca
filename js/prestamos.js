@@ -1,7 +1,6 @@
-const API_PRESTAMOS = "https://sistema-biblioteca-out.vercel.app/prestamos";
-const API_USUARIOS_ACTIVOS = "https://sistema-biblioteca-out.vercel.app/usuarios-activos";
-const API_EJEMPLARES_DISPONIBLES = "https://sistema-biblioteca-out.vercel.app/ejemplares-disponibles";
-
+const API_PRESTAMOS = "/prestamos";
+const API_USUARIOS_ACTIVOS = "/usuarios-activos";
+const API_EJEMPLARES_DISPONIBLES = "/ejemplares-disponibles";
 let allPrestamos = [];
 
 document.addEventListener("DOMContentLoaded", () => {

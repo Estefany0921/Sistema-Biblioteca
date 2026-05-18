@@ -1,4 +1,4 @@
-const API_USUARIOS = "https://sistema-biblioteca-out.vercel.app/usuarios";
+const API_USUARIOS = "/usuarios";
 
 let allUsers = [];
 
@@ -270,7 +270,7 @@ async function desactivarUsuario(id) {
   if (!confirmar) return;
 
   try {
-    const respuesta = await fetch(`https://sistema-biblioteca-out.vercel.app/usuarios/${id}/desactivar`, {
+    const respuesta = await fetch(`/usuarios/${id}/desactivar`, {
       method: "PUT"
     });
 
@@ -296,7 +296,7 @@ async function activarUsuario(id) {
   if (!confirmar) return;
 
   try {
-    const respuesta = await fetch(`https://sistema-biblioteca-out.vercel.app/usuarios/${id}/activar`, {
+    const respuesta = await fetch(`/usuarios/${id}/activar`, {
       method: "PUT"
     });
 
