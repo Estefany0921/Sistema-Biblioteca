@@ -174,9 +174,15 @@ app.delete("/libros/:id", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en http://localhost:${PORT}`);
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+  });
+}
+app.get("/", (req, res) => {
+  res.json({ mensaje: "Backend funcionando correctamente" });
 });
+export default app;
 /* ==========================
    RUTAS DE USUARIOS
    ============================ */
