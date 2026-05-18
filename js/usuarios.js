@@ -1,4 +1,4 @@
-const API_USUARIOS = "https://biblioteca-backend.onrender.com/usuarios";
+const API_USUARIOS = "https://sistema-biblioteca-out.vercel.app/usuarios";
 
 let allUsers = [];
 
@@ -264,38 +264,13 @@ async function eliminarUsuario(id) {
     showToast("No se pudo conectar con el backend.", "error");
   }
 }
-async function activarUsuario(id) {
-  const confirmar = confirm("¿Deseas activar este usuario?");
-
-  if (!confirmar) return;
-
-  try {
-    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/activar`, {
-      method: "PUT"
-    });
-
-    const data = await respuesta.json();
-
-    if (!respuesta.ok) {
-      showToast(data.error || "Error al activar usuario.", "error");
-      return;
-    }
-
-    showToast("Usuario activado correctamente.", "success");
-    cargarUsuarios();
-
-  } catch (error) {
-    console.error("Error al activar usuario:", error);
-    showToast("No se pudo conectar con el backend.", "error");
-  }
-}
 async function desactivarUsuario(id) {
   const confirmar = confirm("¿Deseas desactivar este usuario?");
 
   if (!confirmar) return;
 
   try {
-    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/desactivar`, {
+    const respuesta = await fetch(`https://sistema-biblioteca-out.vercel.app/usuarios/${id}/desactivar`, {
       method: "PUT"
     });
 
@@ -311,6 +286,32 @@ async function desactivarUsuario(id) {
 
   } catch (error) {
     console.error("Error al desactivar usuario:", error);
+    showToast("No se pudo conectar con el backend.", "error");
+  }
+}
+
+async function activarUsuario(id) {
+  const confirmar = confirm("¿Deseas activar este usuario?");
+
+  if (!confirmar) return;
+
+  try {
+    const respuesta = await fetch(`https://sistema-biblioteca-out.vercel.app/usuarios/${id}/activar`, {
+      method: "PUT"
+    });
+
+    const data = await respuesta.json();
+
+    if (!respuesta.ok) {
+      showToast(data.error || "Error al activar usuario.", "error");
+      return;
+    }
+
+    showToast("Usuario activado correctamente.", "success");
+    cargarUsuarios();
+
+  } catch (error) {
+    console.error("Error al activar usuario:", error);
     showToast("No se pudo conectar con el backend.", "error");
   }
 }

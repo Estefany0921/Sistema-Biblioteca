@@ -1,6 +1,6 @@
-const API_PRESTAMOS = "https://biblioteca-backend.onrender.com/prestamos";
-const API_USUARIOS_ACTIVOS = "https://biblioteca-backend.onrender.com/usuarios-activos";
-const API_EJEMPLARES_DISPONIBLES = "https://biblioteca-backend.onrender.com/ejemplares-disponibles";
+const API_PRESTAMOS = "https://sistema-biblioteca-out.vercel.app/prestamos";
+const API_USUARIOS_ACTIVOS = "https://sistema-biblioteca-out.vercel.app/usuarios-activos";
+const API_EJEMPLARES_DISPONIBLES = "https://sistema-biblioteca-out.vercel.app/ejemplares-disponibles";
 
 let allPrestamos = [];
 
