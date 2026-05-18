@@ -11,9 +11,15 @@ app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en el puerto ${PORT}`);
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+  });
+}
+app.get("/", (req, res) => {
+  res.json({ mensaje: "Backend funcionando correctamente" });
 });
+export default app;
 dotenv.config();
 
 const db = createClient({
@@ -170,17 +176,7 @@ app.delete("/libros/:id", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Servidor funcionando en http://localhost:${PORT}`);
-  });
-}
-app.get("/", (req, res) => {
-  res.json({ mensaje: "Backend funcionando correctamente" });
-});
-export default app;
 /* ==========================
    RUTAS DE USUARIOS
    ============================ */
