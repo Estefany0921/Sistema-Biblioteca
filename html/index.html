@@ -189,7 +189,43 @@
       </div>
     </div>
   </section>
+<section class="comments-section">
+  <div class="wrapper">
 
+    <div class="comments-header">
+      <h2>Comentarios de usuarios</h2>
+      <p class="subtitle">Comparte tu opinión sobre el sistema bibliotecario</p>
+    </div>
+
+    <div class="comments-layout">
+
+      <form class="comment-form" id="commentForm">
+        <h3>Escribe un comentario</h3>
+
+        <div class="comment-group">
+          <label for="commentName">Nombre</label>
+          <input type="text" id="commentName" placeholder="Ej: Ana Martínez">
+        </div>
+
+        <div class="comment-group">
+          <label for="commentText">Comentario</label>
+          <textarea id="commentText" rows="5" placeholder="Escribe tu opinión..."></textarea>
+        </div>
+
+        <button type="submit" class="button-1">Publicar comentario</button>
+      </form>
+
+      <div class="comments-list-card">
+        <h3>Opiniones recientes</h3>
+        <div id="commentsList" class="comments-list">
+          <p class="comment-empty">Aún no hay comentarios registrados.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
   <footer class="footer">
     <p>Biblioteca Pública | Sistema de Gestión</p>
