@@ -1,312 +1,328 @@
 ﻿# Sistema de Gestión de Biblioteca Pública
 
-## Integrantes
+## Nombre del proyecto
 
-**Desarrollado por**: 
-- Maria Estefany Piedrahita Monsalve
-- Mateo Jimenez Duque
+Sistema de Gestión de Biblioteca Pública
 
-## Descripción
+## Descripción general del sistema
 
-Este proyecto es un sistema web completo para la gestión de una biblioteca pública. Permite administrar libros, usuarios y préstamos de manera eficiente y organizada. La aplicación cuenta con una interfaz de usuario intuitiva desarrollada en HTML, CSS y JavaScript, y un backend robusto construido con Node.js y Express que se conecta a una base de datos Turso (LibSQL) para el almacenamiento persistente de datos.
+Este proyecto es una aplicación web para la administración de una biblioteca pública. Está compuesta por un frontend en HTML, CSS y JavaScript y un backend en Node.js y Express, con persistencia de datos en Turso (LibSQL). La solución facilita el control de libros, usuarios y préstamos, y ofrece visualizaciones adicionales como el ranking de libros más leídos y una sección de comentarios para usuarios.
 
-## Objetivo
+## Objetivo del proyecto
 
-Facilitar la administración de bibliotecas públicas mediante una plataforma digital que centralice la información de libros disponibles, usuarios registrados y el seguimiento de préstamos. El sistema busca optimizar los procesos bibliotecarios tradicionales, proporcionando herramientas para registrar, consultar y gestionar recursos de manera segura y accesible.
+El objetivo principal es ofrecer una herramienta digital académica y operativa que permita gestionar las operaciones bibliotecarias básicas en un solo lugar, simplificando:
 
-## Tecnologías Utilizadas
+- el registro y edición de libros
+- la administración de usuarios
+- el control de préstamos y devoluciones
+- la visualización de métricas de uso
+
+## Tecnologías utilizadas
 
 ### Frontend
-- **HTML5**: Estructura semántica de las páginas web
-- **CSS3**: Estilos responsivos y diseño moderno con variables CSS personalizadas
-- **JavaScript (ES6+)**: Lógica del lado cliente, manipulación del DOM y comunicación con el backend mediante Fetch API
+- HTML5
+- CSS3
+- JavaScript (ES6+)
 
 ### Backend
-- **Node.js**: Entorno de ejecución para JavaScript en el servidor
-- **Express.js**: Framework web minimalista para crear APIs RESTful
-- **Turso (LibSQL)**: Base de datos distribuida basada en SQLite para almacenamiento de datos
+- Node.js
+- Express.js
+- @libsql/client
+- dotenv
+- cors
 
-### Herramientas de Desarrollo
-- **Git**: Control de versiones
-- **GitHub**: Repositorio remoto y colaboración
-- **VS Code**: Entorno de desarrollo integrado
+### Base de datos
+- Turso / LibSQL
 
-## Estructura de Carpetas
+### Despliegue
+- Vercel
+
+## Estructura de carpetas del proyecto
 
 ```
-biblioteca/
-├── README.md                 # Documentación del proyecto
-├── Sprints.md               # Plan de desarrollo por sprints
-├── backend/                 # Código del servidor
-│   ├── .env                # Variables de entorno (credenciales de BD)
-│   ├── package.json        # Dependencias y scripts de Node.js
-│   ├── package-lock.json   # Bloqueo de versiones de dependencias
-│   ├── server.js           # Servidor Express principal
-│   └── node_modules/       # Dependencias instaladas
-├── css/                    # Hojas de estilo
-│   ├── styles.css          # Estilos de la página principal
-│   ├── Encabezado.css      # Estilos del header común
-│   ├── libros.css          # Estilos del módulo de libros
-│   ├── usuarios.css        # Estilos del módulo de usuarios
-│   └── prestamos.css       # Estilos del módulo de préstamos
-├── html/                   # Páginas HTML
-│   ├── index.html          # Página principal
-│   ├── encabezado.html     # Header común (cargado dinámicamente)
-│   ├── libros.html         # Gestión de libros
-│   ├── usuarios.html       # Gestión de usuarios
-│   └── prestamos.html      # Gestión de préstamos
-├── img/                    # Imágenes y recursos gráficos
-│   └── logo.png           # Logo de la biblioteca
-└── js/                     # Scripts JavaScript
-    ├── script.js           # Lógica de la página principal
-    ├── header.js           # Carga dinámica del header
-    ├── libros.js           # Lógica del módulo de libros
-    ├── usuarios.js         # Lógica del módulo de usuarios
-    └── prestamos.js        # Lógica del módulo de préstamos
+Final-Biblioteca/
+├── README.MD
+├── Sprints.md
+├── index.html
+├── package.json
+├── vercel.json
+├── backend/
+│   ├── package.json
+│   └── server.js
+├── css/
+│   ├── Encabezado.css
+│   ├── libros.css
+│   ├── prestamos.css
+│   ├── styles.css
+│   └── usuarios.css
+├── html/
+│   ├── encabezado.html
+│   ├── index.html
+│   ├── libros.html
+│   ├── prestamos.html
+│   └── usuarios.html
+├── img/
+└── js/
+    ├── header.js
+    ├── libros.js
+    ├── prestamos.js
+    ├── script.js
+    └── usuarios.js
 ```
 
-## Explicación del Frontend
+## Explicación de cada carpeta y archivo principal
 
-### Arquitectura General
-El frontend sigue una arquitectura modular con separación clara de responsabilidades:
-- **HTML**: Define la estructura semántica de cada página
-- **CSS**: Proporciona estilos responsivos y una experiencia visual coherente
-- **JavaScript**: Maneja la lógica de negocio, interacciones del usuario y comunicación con el backend
+### Archivos de raíz
+- `README.MD`: Documentación del proyecto.
+- `Sprints.md`: Documento del plan de desarrollo por sprints.
+- `index.html`: Página principal del frontend que actúa como landing.
+- `package.json`: Archivo de configuración de npm para ejecución del proyecto.
+- `vercel.json`: Configuración de despliegue en Vercel.
 
-### Header Común
-- Utiliza `header.js` para cargar dinámicamente `encabezado.html` en todas las páginas
-- Implementa navegación activa basada en la URL actual
-- Diseño responsivo con logo y menú de navegación
+### Carpeta `backend/`
+- `backend/server.js`: Servidor Express que define las rutas API y la conexión con Turso.
+- `backend/package.json`: Dependencias del backend usadas por Node.js.
 
-### Comunicación con Backend
-- Emplea la Fetch API para realizar peticiones HTTP al servidor
-- Manejo asíncrono de respuestas con async/await
-- Gestión de errores y feedback al usuario mediante notificaciones toast
+### Carpeta `css/`
+- `css/Encabezado.css`: Estilos del encabezado compartido.
+- `css/styles.css`: Estilos generales de la interfaz.
+- `css/libros.css`: Estilos del módulo de libros.
+- `css/usuarios.css`: Estilos del módulo de usuarios.
+- `css/prestamos.css`: Estilos del módulo de préstamos.
 
-### Interfaz de Usuario
-- Diseño moderno con paleta de colores consistente
-- Componentes reutilizables (tablas, modales, formularios)
-- Funcionalidades de búsqueda y filtrado en tiempo real
-- Estadísticas visuales en los dashboards de cada módulo
+### Carpeta `html/`
+- `html/index.html`: Página de inicio del sistema dentro del sitio estático.
+- `html/libros.html`: Página de gestión de libros.
+- `html/usuarios.html`: Página de gestión de usuarios.
+- `html/prestamos.html`: Página de control de préstamos.
+- `html/encabezado.html`: Fragmento HTML del encabezado compartido por las páginas.
 
-## Explicación del Backend
+### Carpeta `js/`
+- `js/header.js`: Carga dinámica del encabezado en todas las páginas.
+- `js/libros.js`: Lógica de frontend para el módulo de libros.
+- `js/usuarios.js`: Lógica de frontend para el módulo de usuarios.
+- `js/prestamos.js`: Lógica de frontend para el módulo de préstamos.
+- `js/script.js`: Funcionalidades de la página principal, gráficos de libros más leídos y comentarios.
 
-### Arquitectura del Servidor
-El backend está construido con Express.js y sigue el patrón de API RESTful:
-- **Rutas modulares**: Endpoints organizados por entidad (libros, usuarios, préstamos)
-- **Middleware**: CORS habilitado, parsing de JSON, archivos estáticos servidos
-- **Manejo de errores**: Respuestas estructuradas con códigos HTTP apropiados
+## Módulos del sistema
 
-### Conexión a Base de Datos
-- Utiliza el cliente oficial de Turso (@libsql/client)
-- Configuración mediante variables de entorno para credenciales
-- Consultas SQL parametrizadas para prevenir inyección SQL
-- Manejo de transacciones para operaciones complejas
+### Página principal
 
-### Seguridad
-- Credenciales sensibles almacenadas en archivo .env (no versionado)
-- Validación de datos de entrada en endpoints
-- Manejo seguro de errores sin exponer información interna
+La página principal ofrece:
 
-## Tablas de la Base de Datos
+- una introducción al sistema
+- acceso rápido a los módulos principales
+- un gráfico de los libros más leídos
+- un formulario de comentarios para usuarios
 
-### Categorías
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | INTEGER | Identificador único (autoincremental) |
-| nombre | TEXT | Nombre de la categoría (Literatura, Ciencia, etc.) |
+### Gestión de libros
 
-### Libros
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | INTEGER | Identificador único (autoincremental) |
-| titulo | TEXT | Título del libro |
-| autor | TEXT | Autor del libro |
-| categoria_id | INTEGER | ID de la categoría (FK a categorias.id) |
-| anio_publicacion | INTEGER | Año de publicación |
+La sección de libros permite:
 
-### Ejemplares
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | INTEGER | Identificador único (autoincremental) |
-| libro_id | INTEGER | ID del libro (FK a libros.id) |
-| codigo | TEXT | Código único del ejemplar (LIB-001, etc.) |
-| estado | TEXT | Estado actual (disponible, prestado) |
-| ubicacion | TEXT | Ubicación física en la biblioteca |
+- listar los libros registrados
+- crear nuevos libros
+- editar libros existentes
+- eliminar libros
+- ver el estado de ejemplares (disponible/prestado)
 
-### Usuarios
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | INTEGER | Identificador único (autoincremental) |
-| nombre | TEXT | Nombre completo del usuario |
-| documento | TEXT | Número de documento de identidad |
-| email | TEXT | Correo electrónico |
-| telefono | TEXT | Número de teléfono |
-| direccion | TEXT | Dirección de residencia |
-| estado | TEXT | Estado del usuario (activo, inactivo) |
+El frontend usa `js/libros.js` y consume la API `/libros`.
 
-### Préstamos
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | INTEGER | Identificador único (autoincremental) |
-| usuario_id | INTEGER | ID del usuario (FK a usuarios.id) |
-| ejemplar_id | INTEGER | ID del ejemplar (FK a ejemplares.id) |
-| fecha_prestamo | DATE | Fecha en que se realizó el préstamo |
-| fecha_devolucion_estimada | DATE | Fecha estimada de devolución |
-| fecha_devolucion_real | DATE | Fecha real de devolución (NULL si no devuelto) |
-| estado | TEXT | Estado del préstamo (activo, devuelto, vencido) |
-| observaciones | TEXT | Notas adicionales sobre el préstamo |
+### Gestión de usuarios
 
-## Funcionalidades por Módulo
+La sección de usuarios permite:
 
-### Módulo de Libros
-- **Visualizar catálogo**: Lista completa de libros con información detallada
-- **Registrar libro**: Formulario para agregar nuevos títulos con validación
-- **Editar libro**: Modificación de información existente
-- **Eliminar libro**: Remoción de libros con eliminación en cascada de préstamos relacionados
-- **Estados de ejemplares**: Seguimiento de disponibilidad (disponible/prestado)
+- listar usuarios registrados
+- registrar nuevos usuarios
+- activar o desactivar usuarios
+- buscar usuarios por nombre o correo
 
-### Módulo de Usuarios
-- **Listado de usuarios**: Tabla con información completa y filtros de búsqueda
-- **Registro de usuarios**: Formulario para nuevos usuarios con campos obligatorios
-- **Estados de usuarios**: Activación/desactivación de cuentas
-- **Estadísticas**: Conteo de usuarios activos e inactivos
-- **Búsqueda**: Filtrado por nombre, email o documento
+El frontend usa `js/usuarios.js` y consume las rutas `/usuarios` y `/usuarios-activos`.
 
-### Módulo de Préstamos
-- **Registro de préstamos**: Asociación de usuario y libro disponible con fechas
-- **Seguimiento de préstamos**: Visualización de estado y fechas de devolución
-- **Marcado de devoluciones**: Actualización automática del estado del ejemplar
-- **Detección de vencimientos**: Identificación visual de préstamos atrasados
-- **Estadísticas**: Conteo por estado (activo, devuelto, vencido)
-- **Filtros**: Búsqueda por libro, autor, usuario o estado
+### Control de préstamos
 
-## Rutas del Backend
+El módulo de préstamos permite:
 
-### Libros
-- `GET /libros` - Obtener todos los libros con información de ejemplares
-- `POST /libros` - Registrar nuevo libro y crear ejemplar automáticamente
-- `PUT /libros/:id` - Actualizar información de libro y estado del ejemplar
-- `DELETE /libros/:id` - Eliminar libro y todos sus ejemplares/préstamos relacionados
+- registrar nuevos préstamos
+- seleccionar usuarios activos y libros disponibles
+- controlar fechas de préstamo y devolución estimada
+- marcar devoluciones y liberar ejemplares
+- filtrar préstamos por estado
 
-### Usuarios
-- `GET /usuarios` - Obtener todos los usuarios ordenados por ID descendente
-- `GET /usuarios-activos` - Obtener solo usuarios con estado 'activo'
-- `POST /usuarios` - Registrar nuevo usuario
-- `DELETE /usuarios/:id` - Eliminar usuario
-- `PUT /usuarios/:id/inactivar` - Cambiar estado a 'inactivo'
-- `PUT /usuarios/:id/activar` - Cambiar estado a 'activo'
+El frontend usa `js/prestamos.js` y consume las rutas `/prestamos`, `/usuarios-activos` y `/ejemplares-disponibles`.
 
-### Préstamos
-- `GET /prestamos` - Obtener todos los préstamos con información relacionada
-- `GET /ejemplares-disponibles` - Obtener ejemplares con estado 'disponible'
-- `POST /prestamos` - Registrar nuevo préstamo y cambiar estado del ejemplar
-- `PUT /prestamos/:id/devolver` - Marcar préstamo como devuelto y liberar ejemplar
+### Libros más leídos
 
-## Pasos de Instalación
+Este módulo se presenta como un ranking en la página principal. Está construido con datos obtenidos de la ruta `/libros-mas-leidos` y muestra:
 
-### Prerrequisitos
-- Node.js (versión 16 o superior)
-- npm (viene incluido con Node.js)
-- Cuenta en Turso para la base de datos
+- título y autor del libro
+- cantidad de préstamos
+- barra de progreso proporcional al libro más prestado
 
-### Instalación del Backend
-1. Navegar al directorio del backend:
-   ```bash
-   cd backend
-   ```
+### Comentarios
 
-2. Instalar dependencias:
-   ```bash
-   npm install
-   ```
+La sección de comentarios en la página principal permite a los usuarios:
 
-3. Configurar variables de entorno:
-   - Copiar el archivo `.env` y actualizar las credenciales de Turso
-   - Asegurarse de que `TURSO_DATABASE_URL` y `TURSO_AUTH_TOKEN` estén configurados correctamente
+- enviar un nombre
+- escribir un comentario
+- ver opiniones recientes
 
-## Pasos de Ejecución
+Los comentarios se almacenan en `localStorage` del navegador. 
 
-### Ejecutar el Servidor
-1. Desde el directorio `backend`:
-   ```bash
-   npm start
-   ```
+> Pendiente por implementar: persistencia de comentarios en backend.
 
-2. El servidor se iniciará en el puerto 3000 (configurable en `.env`)
+## Funcionamiento del frontend
 
-### Acceder a la Aplicación
-- Abrir un navegador web
-- Navegar a `http://localhost:3000` (servirá los archivos estáticos del frontend)
-- La página principal se cargará automáticamente
+El frontend está construido con páginas HTML estáticas y JavaScript que interactúa con la API del backend. Las principales características son:
 
-### Páginas Disponibles
-- `http://localhost:3000/html/index.html` - Página principal
-- `http://localhost:3000/html/libros.html` - Gestión de libros
-- `http://localhost:3000/html/usuarios.html` - Gestión de usuarios
-- `http://localhost:3000/html/prestamos.html` - Gestión de préstamos
+- carga dinámica del encabezado mediante `js/header.js`
+- consumo de la API con Fetch API y async/await
+- renderizado de tablas y listas según los datos recibidos
+- formularios de creación y edición
+- búsqueda y filtrado dinámico en libros, usuarios y préstamos
+- visualización de métricas en el dashboard principal
+- almacenamiento local de comentarios en `localStorage`
 
-## Variables de Entorno
+## Funcionamiento del backend
 
-El archivo `backend/.env` debe contener las siguientes variables:
+El backend se ejecuta en Node.js con Express y funciona como middleware entre el frontend y Turso. Su comportamiento principal incluye:
+
+- habilitar CORS para permitir solicitudes desde el frontend
+- parsear cuerpos JSON en las solicitudes
+- conectar con Turso mediante `@libsql/client`
+- definir rutas REST para libros, usuarios y préstamos
+- actualizar estados de ejemplares durante préstamos y devoluciones
+- manejar errores con respuestas HTTP adecuadas
+
+El servidor se define en `backend/server.js` y, al desplegarse en Vercel, se utiliza como función serverless.
+
+## Explicación de las rutas API
+
+### `/libros`
+- `GET /libros`: obtiene todos los libros con datos del ejemplar vinculado, categoría y estado.
+- `POST /libros`: crea un libro nuevo y un ejemplar asociado con código único.
+- `PUT /libros/:id`: actualiza los datos del libro y el estado del ejemplar.
+- `DELETE /libros/:id`: elimina el libro, sus ejemplares y los préstamos relacionados.
+
+### `/usuarios`
+- `GET /usuarios`: obtiene todos los usuarios registrados.
+- `POST /usuarios`: registra un nuevo usuario.
+- `DELETE /usuarios/:id`: elimina un usuario.
+- `PUT /usuarios/:id/desactivar`: cambia el estado de un usuario a `inactivo`.
+- `PUT /usuarios/:id/activar`: cambia el estado de un usuario a `activo`.
+
+### `/prestamos`
+- `GET /prestamos`: obtiene todos los préstamos con nombre de usuario, libro y estado.
+- `POST /prestamos`: registra un nuevo préstamo y actualiza el ejemplar a `prestado`.
+- `PUT /prestamos/:id/devolver`: marca el préstamo como `devuelto`, registra la fecha real de devolución y actualiza el ejemplar a `disponible`.
+
+### `/usuarios-activos`
+- `GET /usuarios-activos`: obtiene los usuarios cuyo estado es `activo`. Esta ruta es usada para seleccionar usuarios válidos al crear un préstamo.
+
+### `/ejemplares-disponibles`
+- `GET /ejemplares-disponibles`: obtiene los ejemplares con estado `disponible`. Se utiliza para seleccionar los libros que pueden prestarse.
+
+### `/libros-mas-leidos`
+- `GET /libros-mas-leidos`: obtiene los libros con mayor número de préstamos para generar el ranking de la página principal.
+
+## Explicación de la conexión con Turso
+
+La conexión con Turso se realiza en `backend/server.js` con el cliente `@libsql/client`. El servidor utiliza las variables de entorno para establecer la URL y el token de autenticación. Las consultas SQL se ejecutan sobre la base de datos Turso y permiten:
+
+- recuperar libros, usuarios y préstamos
+- insertar nuevos registros
+- actualizar estados de ejemplares y préstamos
+- eliminar datos relacionados
+
+## Variables de entorno necesarias
+
+El proyecto requiere las siguientes variables de entorno:
 
 ```env
-# URL de conexión a la base de datos Turso
-TURSO_DATABASE_URL=libsql://[nombre-db].[region].turso.io
-
-# Token de autenticación de Turso
-TURSO_AUTH_TOKEN=[token-generado-por-turso]
-
-# Puerto del servidor (opcional, por defecto 3000)
+TURSO_DATABASE_URL=
+TURSO_AUTH_TOKEN=
 PORT=3000
 ```
 
-**Nota**: Este archivo contiene credenciales sensibles y no debe ser versionado en el repositorio.
+- `TURSO_DATABASE_URL`: URL de conexión a la base de datos Turso.
+- `TURSO_AUTH_TOKEN`: token de autenticación para Turso.
+- `PORT`: puerto opcional para ejecutar el servidor local.
 
-## Buenas Prácticas Implementadas
+## Pasos para instalar el proyecto localmente
 
-### Código
-- **Separación de responsabilidades**: Frontend y backend claramente diferenciados
-- **Modularidad**: Funciones reutilizables y archivos organizados por funcionalidad
-- **Nombres descriptivos**: Variables, funciones y archivos con nombres claros
-- **Comentarios**: Código documentado con explicaciones de funcionalidades complejas
+1. Clonar el repositorio en su equipo.
+2. Abrir una terminal en el directorio `Final-Biblioteca`.
+3. Ejecutar:
 
-### Seguridad
-- **Validación de entrada**: Datos verificados antes de procesar en el backend
-- **Consultas parametrizadas**: Prevención de inyección SQL
-- **Credenciales protegidas**: Variables de entorno para información sensible
-- **Manejo de errores**: Respuestas controladas sin exposición de información interna
+```bash
+npm install
+```
 
-### Interfaz de Usuario
-- **Responsive design**: Adaptable a diferentes tamaños de pantalla
-- **Accesibilidad**: Uso de etiquetas semánticas y navegación por teclado
-- **Feedback visual**: Notificaciones toast y estados visuales claros
-- **Experiencia consistente**: Paleta de colores y componentes reutilizables
+4. Crear un archivo `.env` con las variables de entorno necesarias.
+5. Ejecutar el proyecto:
 
-### Base de Datos
-- **Integridad referencial**: Claves foráneas y eliminación en cascada
-- **Normalización**: Estructura optimizada para evitar redundancia
-- **Índices**: Consultas eficientes con ordenamiento apropiado
+```bash
+npm start
+```
 
-## Mejoras Futuras
+6. Abrir el navegador en:
 
-### Funcionalidades
-- **Sistema de autenticación**: Login y roles de usuario (administrador, bibliotecario)
-- **Notificaciones**: Alertas por email para préstamos vencidos
-- **Códigos QR**: Generación de códigos para identificación rápida de libros
-- **API pública**: Endpoints para integración con otras aplicaciones
-- **Reportes**: Generación de estadísticas avanzadas y exportación a PDF
+```text
+http://localhost:3000
+```
 
-### Técnico
-- **Framework frontend**: Migración a React o Vue.js para mejor mantenibilidad
-- **Base de datos relacional**: Evaluación de PostgreSQL para mayor escalabilidad
-- **Testing**: Implementación de pruebas unitarias e integración
-- **CI/CD**: Pipeline de despliegue automático
-- **Contenedorización**: Docker para facilitar el despliegue
+## Pasos para ejecutar el backend
 
-### Interfaz
-- **Modo oscuro**: Alternativa visual para diferentes preferencias
-- **Internacionalización**: Soporte para múltiples idiomas
-- **PWA**: Funcionalidad offline y instalación como aplicación
-- **Dashboard avanzado**: Gráficos interactivos y métricas en tiempo real
+1. Abrir terminal en el directorio `Final-Biblioteca`.
+2. Instalar dependencias si no se ha hecho aún:
+
+```bash
+npm install
+```
+
+3. Ejecutar el servidor:
+
+```bash
+npm start
+```
+
+4. Verificar que el backend responde en la ruta raíz:
+
+```bash
+curl http://localhost:3000/
+```
+
+## Pasos para desplegar en Vercel
+
+1. Crear una cuenta en Vercel si no está registrada.
+2. Conectar el repositorio de GitHub a Vercel.
+3. Asegurarse de que `vercel.json` esté presente en la raíz del proyecto.
+4. Configurar las variables de entorno en el panel de Vercel:
+   - `TURSO_DATABASE_URL`
+   - `TURSO_AUTH_TOKEN`
+   - `PORT` (opcional)
+5. Desplegar el proyecto desde Vercel.
+
+> Nota: la configuración de `vercel.json` asocia las rutas del frontend y el backend con `backend/server.js`.
+
+## Recomendaciones importantes
+
+- No subir el archivo `.env` al repositorio.
+- No subir la carpeta `node_modules`.
+- No incluir credenciales ni tokens en el código fuente.
+- Revisar que las variables en Vercel coincidan con las usadas localmente.
+- Comprobar que la ruta `/libros-mas-leidos` funciona antes de usar el gráfico de la página principal.
+
+## Posibles mejoras futuras
+
+- Implementar autenticación y permisos de usuario.
+- Persistir la sección de comentarios en el backend en lugar de `localStorage`.
+- Añadir pruebas automáticas para frontend y backend.
+- Mejorar la validación de datos en el frontend y el backend.
+- Agregar un flujo de registro y login para el personal de la biblioteca.
+- Generar reportes descargables y estadísticas avanzadas.
+
+## Créditos
+
+- Maria Estefany Piedrahita Monsalve
+- Mateo Jimenez Duque
 

@@ -72,3 +72,61 @@ function renderLibrosMasLeidos(libros) {
     `;
   }).join("");
 }
+/* ============================
+   COMENTARIOS EN PÁGINA PRINCIPAL
+   ============================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const commentForm = document.getElementById("commentForm");
+  const commentsList = document.getElementById("commentsList");
+
+  let comentarios = JSON.parse(localStorage.getItem("comentariosBiblioteca")) || [];
+
+  mostrarComentarios();
+
+  if (commentForm) {
+    commentForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const nombre = document.getElementById("commentName").value.trim();
+      const texto = document.getElementById("commentText").value.trim();
+
+      if (!nombre || !texto) {
+        alert("Por favor escribe tu nombre y comentario.");
+        return;
+      }
+
+      const nuevoComentario = {
+        nombre,
+        texto,
+        fecha: new Date().toLocaleDateString("es-CO")
+      };
+
+      comentarios.unshift(nuevoComentario);
+
+      localStorage.setItem("comentariosBiblioteca", JSON.stringify(comentarios));
+
+      commentForm.reset();
+      mostrarComentarios();
+    });
+  }
+
+  function mostrarComentarios() {
+    if (!commentsList) return;
+
+    if (comentarios.length === 0) {
+      commentsList.innerHTML = `
+        <p class="comment-empty">Aún no hay comentarios registrados.</p>
+      `;
+      return;
+    }
+
+    commentsList.innerHTML = comentarios.map(comentario => `
+      <div class="comment-item">
+        <h4>${comentario.nombre}</h4>
+        <p>${comentario.texto}</p>
+        <span class="comment-date">${comentario.fecha}</span>
+      </div>
+    `).join("");
+  }
+});
