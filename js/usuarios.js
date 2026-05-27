@@ -8,17 +8,28 @@ let allUsers = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarUsuarios();
+
+  const searchBox = document.getElementById("search-box");
+
+  if (searchBox) {
+    searchBox.addEventListener("input", filterTable);
+  }
 });
 
 async function cargarUsuarios() {
   try {
     const respuesta = await fetch(API_USUARIOS);
+
+    if (!respuesta.ok) {
+      throw new Error("Error al consultar usuarios");
+    }
+
     allUsers = await respuesta.json();
 
     renderTable(allUsers);
     updateStats(allUsers);
   } catch (error) {
-    console.error(error);
+    console.error("Error al cargar usuarios:", error);
     showToast("Error al cargar usuarios.", "error");
   }
 }
@@ -72,15 +83,14 @@ function renderTable(users) {
         </td>
 
         <td class="td-small">—</td>
+
         <td>
-   ${
-    u.estado === "activo"
-      ? `<button class="btn-disable-user" onclick="desactivarUsuario(${u.id})">Desactivar</button>`
-      : `<button class="btn-enable-user" onclick="activarUsuario(${u.id})">Activar</button>`
-  }
-   
-  </button>
-</td>
+          ${
+            u.estado === "activo"
+              ? `<button class="btn-disable-user" onclick="desactivarUsuario(${u.id})">Desactivar</button>`
+              : `<button class="btn-enable-user" onclick="activarUsuario(${u.id})">Activar</button>`
+          }
+        </td>
       </tr>
     `;
   }).join("");
@@ -119,19 +129,27 @@ function updateStats(users) {
 }
 
 /* ============================
-   BUSCADOR
+   BUSCADOR POR NOMBRE O CORREO
    ============================ */
 
 function filterTable() {
-  const q = document.getElementById("search-box").value.toLowerCase().trim();
+  const searchBox = document.getElementById("search-box");
+  const q = searchBox.value.toLowerCase().trim();
 
-  const filtered = q
-    ? allUsers.filter(u =>
-        (u.nombre || "").toLowerCase().includes(q) ||
-        (u.email || "").toLowerCase().includes(q) ||
-        (u.documento || "").toLowerCase().includes(q)
-      )
-    : allUsers;
+  if (q === "") {
+    renderTable(allUsers);
+    return;
+  }
+
+  const filtered = allUsers.filter(u => {
+    const nombre = String(u.nombre || "").toLowerCase();
+    const email = String(u.email || "").toLowerCase();
+
+    return (
+      nombre.includes(q) ||
+      email.includes(q)
+    );
+  });
 
   renderTable(filtered);
 }
@@ -198,7 +216,7 @@ async function saveUser() {
   };
 
   try {
-    const respuesta = await fetch("http://localhost:3000/usuarios", {
+    const respuesta = await fetch(API_USUARIOS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -217,60 +235,28 @@ async function saveUser() {
     showToast("Usuario registrado correctamente.", "success");
     closeModal();
 
-    if (typeof cargarUsuarios === "function") {
-      cargarUsuarios();
-    }
+    await cargarUsuarios();
+
+    const searchBox = document.getElementById("search-box");
+    if (searchBox) searchBox.value = "";
 
   } catch (error) {
     console.error("Error en fetch:", error);
     showToast("No se pudo conectar con el backend.", "error");
   }
 }
+
 /* ============================
-   TOAST
+   ACTIVAR Y DESACTIVAR USUARIO
    ============================ */
 
-function showToast(msg, type = "success") {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-
-  setTimeout(() => {
-    t.className = "toast";
-  }, 3200);
-}
-async function eliminarUsuario(id) {
-  const confirmar = confirm("¿Deseas inactivar este usuario?");
-
-  if (!confirmar) return;
-
-  try {
-    const respuesta = await fetch(`http://localhost:3000/usuarios/${id}/inactivar`, {
-      method: "PUT"
-    });
-
-    const data = await respuesta.json();
-
-    if (!respuesta.ok) {
-      showToast(data.error || "Error al inactivar usuario.", "error");
-      return;
-    }
-
-    showToast("Usuario inactivado correctamente.", "success");
-    cargarUsuarios();
-
-  } catch (error) {
-    console.error("Error al inactivar usuario:", error);
-    showToast("No se pudo conectar con el backend.", "error");
-  }
-}
 async function desactivarUsuario(id) {
   const confirmar = confirm("¿Deseas desactivar este usuario?");
 
   if (!confirmar) return;
 
   try {
-    const respuesta = await fetch(`/usuarios/${id}/desactivar`, {
+    const respuesta = await fetch(`${API_USUARIOS}/${id}/desactivar`, {
       method: "PUT"
     });
 
@@ -282,7 +268,7 @@ async function desactivarUsuario(id) {
     }
 
     showToast("Usuario desactivado correctamente.", "success");
-    cargarUsuarios();
+    await cargarUsuarios();
 
   } catch (error) {
     console.error("Error al desactivar usuario:", error);
@@ -296,7 +282,7 @@ async function activarUsuario(id) {
   if (!confirmar) return;
 
   try {
-    const respuesta = await fetch(`/usuarios/${id}/activar`, {
+    const respuesta = await fetch(`${API_USUARIOS}/${id}/activar`, {
       method: "PUT"
     });
 
@@ -308,10 +294,24 @@ async function activarUsuario(id) {
     }
 
     showToast("Usuario activado correctamente.", "success");
-    cargarUsuarios();
+    await cargarUsuarios();
 
   } catch (error) {
     console.error("Error al activar usuario:", error);
     showToast("No se pudo conectar con el backend.", "error");
   }
+}
+
+/* ============================
+   TOAST
+   ============================ */
+
+function showToast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+
+  setTimeout(() => {
+    t.className = "toast";
+  }, 3200);
 }

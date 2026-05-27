@@ -8,26 +8,54 @@ const inputAutor = document.getElementById("autor");
 const inputCategoria = document.getElementById("categoria");
 const inputAnio = document.getElementById("anio");
 const inputEstado = document.getElementById("estado");
+const searchInput = document.querySelector(".search-input");
 
+let librosGuardados = [];
 let libroEditandoId = null;
 let ejemplarEditandoId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarLibros();
+
+  if (searchInput) {
+    searchInput.addEventListener("input", buscarLibros);
+  }
 });
 
 /* MOSTRAR LIBROS REGISTRADOS */
 async function cargarLibros() {
   try {
     const respuesta = await fetch(API_URL);
+
+    if (!respuesta.ok) {
+      throw new Error("Error al consultar libros");
+    }
+
     const libros = await respuesta.json();
 
+    librosGuardados = libros;
+    mostrarLibros(librosGuardados);
+
+  } catch (error) {
+    console.error("Error al cargar libros:", error);
+
+    booksBody.innerHTML = `
+      <tr>
+        <td colspan="6">Error al cargar los libros.</td>
+      </tr>
+    `;
+  }
+}
+
+/* PINTAR LIBROS EN LA TABLA */
+function mostrarLibros(libros) {
+  try {
     booksBody.innerHTML = "";
 
-    if (libros.length === 0) {
+    if (!libros || libros.length === 0) {
       booksBody.innerHTML = `
         <tr>
-          <td colspan="6">No hay libros registrados.</td>
+          <td colspan="6">No se encontraron libros.</td>
         </tr>
       `;
       return;
@@ -43,8 +71,8 @@ async function cargarLibros() {
         <td>${index + 1}</td>
 
         <td>
-          <strong>${libro.titulo}</strong>
-          <span>${libro.autor}</span>
+          <strong>${libro.titulo || "Sin título"}</strong>
+          <span>${libro.autor || "Sin autor"}</span>
         </td>
 
         <td>${libro.categoria || "Sin categoría"}</td>
@@ -53,7 +81,7 @@ async function cargarLibros() {
           <span class="status ${estadoClase}">${estadoTexto}</span>
         </td>
 
-        <td>${libro.anio_publicacion}</td>
+        <td>${libro.anio_publicacion || "—"}</td>
 
         <td>
           <div class="action-buttons">
@@ -72,13 +100,42 @@ async function cargarLibros() {
       booksBody.appendChild(fila);
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error al mostrar libros:", error);
+
     booksBody.innerHTML = `
       <tr>
         <td colspan="6">Error al cargar los libros.</td>
       </tr>
     `;
   }
+}
+
+/* BUSCAR LIBROS */
+function buscarLibros() {
+  const texto = searchInput.value.toLowerCase().trim();
+
+  if (texto === "") {
+    mostrarLibros(librosGuardados);
+    return;
+  }
+
+  const librosFiltrados = librosGuardados.filter((libro) => {
+    const titulo = String(libro.titulo || "").toLowerCase();
+    const autor = String(libro.autor || "").toLowerCase();
+    const categoria = String(libro.categoria || "").toLowerCase();
+    const estado = String(libro.estado || "").toLowerCase();
+    const anio = String(libro.anio_publicacion || "").toLowerCase();
+
+    return (
+      titulo.includes(texto) ||
+      autor.includes(texto) ||
+      categoria.includes(texto) ||
+      estado.includes(texto) ||
+      anio.includes(texto)
+    );
+  });
+
+  mostrarLibros(librosFiltrados);
 }
 
 /* REGISTRAR O ACTUALIZAR LIBRO */
@@ -101,7 +158,7 @@ bookForm.addEventListener("submit", async (event) => {
 
   try {
     if (libroEditandoId === null) {
-      await fetch(API_URL, {
+      const respuesta = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,15 +166,23 @@ bookForm.addEventListener("submit", async (event) => {
         body: JSON.stringify(libro),
       });
 
+      if (!respuesta.ok) {
+        throw new Error("Error al registrar libro");
+      }
+
       alert("Libro registrado correctamente.");
     } else {
-      await fetch(`${API_URL}/${libroEditandoId}`, {
+      const respuesta = await fetch(`${API_URL}/${libroEditandoId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(libro),
       });
+
+      if (!respuesta.ok) {
+        throw new Error("Error al actualizar libro");
+      }
 
       alert("Libro actualizado correctamente.");
 
@@ -127,9 +192,14 @@ bookForm.addEventListener("submit", async (event) => {
     }
 
     bookForm.reset();
-    cargarLibros();
+    await cargarLibros();
+
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
   } catch (error) {
-    console.error(error);
+    console.error("Error al guardar libro:", error);
     alert("Ocurrió un error al guardar el libro.");
   }
 });
@@ -139,11 +209,11 @@ function prepararEdicion(libro) {
   libroEditandoId = libro.libro_id;
   ejemplarEditandoId = libro.ejemplar_id;
 
-  inputTitulo.value = libro.titulo;
-  inputAutor.value = libro.autor;
+  inputTitulo.value = libro.titulo || "";
+  inputAutor.value = libro.autor || "";
   inputCategoria.value = obtenerCategoriaId(libro.categoria);
-  inputAnio.value = libro.anio_publicacion;
-  inputEstado.value = libro.estado;
+  inputAnio.value = libro.anio_publicacion || "";
+  inputEstado.value = libro.estado || "";
 
   document.querySelector(".btn-save").textContent = "Actualizar libro";
 
@@ -160,14 +230,23 @@ async function eliminarLibro(id) {
   if (!confirmar) return;
 
   try {
-    await fetch(`${API_URL}/${id}`, {
+    const respuesta = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
     });
 
+    if (!respuesta.ok) {
+      throw new Error("Error al eliminar libro");
+    }
+
     alert("Libro eliminado correctamente.");
-    cargarLibros();
+    await cargarLibros();
+
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
   } catch (error) {
-    console.error(error);
+    console.error("Error al eliminar libro:", error);
     alert("Ocurrió un error al eliminar el libro.");
   }
 }

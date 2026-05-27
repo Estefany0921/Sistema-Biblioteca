@@ -1,14 +1,25 @@
 const API_PRESTAMOS = "/prestamos";
 const API_USUARIOS_ACTIVOS = "/usuarios-activos";
 const API_EJEMPLARES_DISPONIBLES = "/ejemplares-disponibles";
+
 let allPrestamos = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarPrestamos();
   cargarUsuariosActivos();
   cargarEjemplaresDisponibles();
-});
 
+  const searchBox = document.getElementById("search-box");
+  const filterEstado = document.getElementById("filter-estado");
+
+  if (searchBox) {
+    searchBox.addEventListener("input", filterTable);
+  }
+
+  if (filterEstado) {
+    filterEstado.addEventListener("change", filterTable);
+  }
+});
 
 /* UTILIDADES */
 
@@ -56,12 +67,16 @@ function badgeLabel(estado) {
   }[estado] || estado;
 }
 
-
 /* CARGAR DATOS DESDE TURSO */
 
 async function cargarPrestamos() {
   try {
     const respuesta = await fetch(API_PRESTAMOS);
+
+    if (!respuesta.ok) {
+      throw new Error("Error al consultar préstamos");
+    }
+
     allPrestamos = await respuesta.json();
 
     renderTable(allPrestamos);
@@ -75,8 +90,12 @@ async function cargarPrestamos() {
 async function cargarUsuariosActivos() {
   try {
     const respuesta = await fetch(API_USUARIOS_ACTIVOS);
-    const usuarios = await respuesta.json();
 
+    if (!respuesta.ok) {
+      throw new Error("Error al consultar usuarios activos");
+    }
+
+    const usuarios = await respuesta.json();
     const selectUsuario = document.getElementById("in-usuario");
 
     selectUsuario.innerHTML = `
@@ -99,8 +118,12 @@ async function cargarUsuariosActivos() {
 async function cargarEjemplaresDisponibles() {
   try {
     const respuesta = await fetch(API_EJEMPLARES_DISPONIBLES);
-    const ejemplares = await respuesta.json();
 
+    if (!respuesta.ok) {
+      throw new Error("Error al consultar ejemplares disponibles");
+    }
+
+    const ejemplares = await respuesta.json();
     const selectEjemplar = document.getElementById("in-ejemplar");
 
     selectEjemplar.innerHTML = `
@@ -120,7 +143,6 @@ async function cargarEjemplaresDisponibles() {
   }
 }
 
-
 /* MOSTRAR TABLA */
 
 function renderTable(list) {
@@ -132,7 +154,7 @@ function renderTable(list) {
   if (!list.length) {
     tbody.innerHTML = emptyHTML(
       "Sin resultados",
-      "No hay préstamos registrados o no coinciden con el filtro."
+      "No hay préstamos registrados o no coinciden con la búsqueda."
     );
     return;
   }
@@ -204,7 +226,6 @@ function emptyHTML(title, desc) {
   `;
 }
 
-
 /* ESTADÍSTICAS */
 
 function updateStats(list) {
@@ -220,12 +241,14 @@ function updateStats(list) {
     list.filter(p => p.estado === "vencido").length;
 }
 
-
-/* FILTROS */
+/* FILTROS: BUSCAR POR LIBRO O USUARIO */
 
 function filterTable() {
-  const q = document.getElementById("search-box").value.toLowerCase().trim();
-  const estado = document.getElementById("filter-estado").value;
+  const searchBox = document.getElementById("search-box");
+  const filterEstado = document.getElementById("filter-estado");
+
+  const q = searchBox ? searchBox.value.toLowerCase().trim() : "";
+  const estado = filterEstado ? filterEstado.value : "";
 
   let filtered = allPrestamos;
 
@@ -234,16 +257,19 @@ function filterTable() {
   }
 
   if (q) {
-    filtered = filtered.filter(p =>
-      (p.libro || "").toLowerCase().includes(q) ||
-      (p.autor || "").toLowerCase().includes(q) ||
-      (p.usuario || "").toLowerCase().includes(q)
-    );
+    filtered = filtered.filter(p => {
+      const libro = String(p.libro || "").toLowerCase();
+      const usuario = String(p.usuario || "").toLowerCase();
+
+      return (
+        libro.includes(q) ||
+        usuario.includes(q)
+      );
+    });
   }
 
   renderTable(filtered);
 }
-
 
 /* DEVOLVER PRÉSTAMO */
 
@@ -269,14 +295,20 @@ async function marcarDevuelto(id, ejemplarId) {
 
     showToast("Préstamo marcado como devuelto.", "success");
 
-    cargarPrestamos();
-    cargarEjemplaresDisponibles();
+    await cargarPrestamos();
+    await cargarEjemplaresDisponibles();
+
+    const searchBox = document.getElementById("search-box");
+    const filterEstado = document.getElementById("filter-estado");
+
+    if (searchBox) searchBox.value = "";
+    if (filterEstado) filterEstado.value = "";
+
   } catch (error) {
     console.error("Error al devolver préstamo:", error);
     showToast("No se pudo marcar como devuelto.", "error");
   }
 }
-
 
 /* MODAL */
 
@@ -316,7 +348,6 @@ function clearForm() {
   const observaciones = document.getElementById("in-observaciones");
   if (observaciones) observaciones.value = "";
 }
-
 
 /* GUARDAR PRÉSTAMO */
 
@@ -362,14 +393,20 @@ async function savePrestamo() {
     showToast("Préstamo registrado correctamente.", "success");
     closeModal();
 
-    cargarPrestamos();
-    cargarEjemplaresDisponibles();
+    await cargarPrestamos();
+    await cargarEjemplaresDisponibles();
+
+    const searchBox = document.getElementById("search-box");
+    const filterEstado = document.getElementById("filter-estado");
+
+    if (searchBox) searchBox.value = "";
+    if (filterEstado) filterEstado.value = "";
+
   } catch (error) {
     console.error("Error al guardar préstamo:", error);
     showToast("No se pudo conectar con el backend.", "error");
   }
 }
-
 
 /* TOAST */
 
