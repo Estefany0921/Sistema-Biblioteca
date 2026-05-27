@@ -927,3 +927,31 @@ video {
     padding: 32px 24px;
   }
 }
+/* ============================
+   SCROLL EN COMENTARIOS
+   ============================ */
+
+.comments-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Barra de scroll personalizada */
+.comments-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 999px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+  background: #5dae87;
+  border-radius: 999px;
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+  background: #42966e;
+}
