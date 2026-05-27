@@ -641,3 +641,149 @@ video {
     max-width: 330px;
   }
 }
+/* ============================
+   LIBROS MÁS LEÍDOS
+   ============================ */
+
+.popular-books-section {
+  padding: 100px 0;
+  background: #ffffff;
+}
+
+.popular-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.popular-header h2 {
+  font-family: "Arimo", "DM Sans", sans-serif;
+  font-size: clamp(36px, 5vw, 54px);
+  color: #444444;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.popular-header .subtitle {
+  color: #5dae87;
+  font-size: 16px;
+  margin-top: 14px;
+}
+
+.popular-books-card {
+  max-width: 920px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  padding: 42px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+.popular-books-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.popular-book-item {
+  display: grid;
+  grid-template-columns: 1.4fr 1.3fr auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.popular-book-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.popular-position {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #f4f4f4;
+  color: #5dae87;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Arimo", "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.popular-book-info h3 {
+  font-family: "Arimo", "DM Sans", sans-serif;
+  font-size: 17px;
+  color: #444444;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.popular-book-info p {
+  color: #777777;
+  font-size: 14px;
+  margin: 0;
+}
+
+.popular-book-bar-wrap {
+  width: 100%;
+  height: 12px;
+  background: #f1f1f1;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.popular-book-bar {
+  height: 100%;
+  background: #5dae87;
+  border-radius: 999px;
+  animation: growBar 0.9s ease both;
+}
+
+.popular-book-count {
+  color: #444444;
+  font-family: "Arimo", "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.loading-chart,
+.chart-empty {
+  text-align: center;
+  color: #777777;
+  font-size: 16px;
+  padding: 30px;
+}
+
+@keyframes growBar {
+  from {
+    width: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .popular-book-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .popular-book-item:last-child {
+    border-bottom: none;
+  }
+
+  .popular-book-count {
+    text-align: left;
+  }
+
+  .popular-books-card {
+    padding: 30px 22px;
+  }
+}

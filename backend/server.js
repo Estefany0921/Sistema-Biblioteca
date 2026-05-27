@@ -493,3 +493,28 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export default app;
+/* ============================
+   LIBROS MÁS LEÍDOS / MÁS PRESTADOS
+   ============================ */
+
+app.get("/libros-mas-leidos", async (req, res) => {
+  try {
+    const resultado = await db.execute(`
+      SELECT 
+        l.titulo,
+        l.autor,
+        COUNT(p.id) AS total_prestamos
+      FROM prestamos p
+      INNER JOIN ejemplares e ON p.ejemplar_id = e.id
+      INNER JOIN libros l ON e.libro_id = l.id
+      GROUP BY l.id, l.titulo, l.autor
+      ORDER BY total_prestamos DESC
+      LIMIT 5
+    `);
+
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("Error al consultar libros más leídos:", error);
+    res.status(500).json({ error: "Error al consultar libros más leídos" });
+  }
+});
