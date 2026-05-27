@@ -1,136 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8">
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Biblioteca Pública | Sistema de Gestión</title>
 
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../css/Encabezado.css">
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
+
   <div id="header-placeholder"></div>
-      <section class="hero">
 
-      <div class="hero-bg-circles">
-        <div class="circle c1"></div>
-        <div class="circle c2"></div>
-        <div class="circle c3"></div>
+  <section class="landing-banner" id="home">
+    <div class="wrapper">
+      <span class="landing-badge">Sistema de Gestión Bibliotecaria</span>
+
+      <h1>Biblioteca Pública</h1>
+
+      <p class="subtitle">
+        Administra libros, usuarios y préstamos de forma clara, rápida y organizada.
+      </p>
+
+      <div class="buttons">
+        <a href="../html/libros.html" class="button-1">Gestionar libros</a>
+        <a href="../html/prestamos.html" class="button-2">Ver préstamos</a>
       </div>
+    </div>
+  </section>
 
-      <div class="hero-content">
-        <span class="hero-badge">Sistema de Gestión Bibliotecaria</span>
+  <section class="intro-section">
+    <div class="wrapper">
+      <h2>Gestión sencilla y eficiente</h2>
+      <p class="subtitle">Todo el sistema bibliotecario en un solo lugar</p>
 
-        <h1 class="hero-title">
-          Administra tu <span class="hero-highlight">biblioteca pública</span>
-          de forma sencilla y ordenada
-        </h1>
+      <p class="intro-text">
+        Esta plataforma permite registrar libros, administrar usuarios y controlar préstamos,
+        ayudando a organizar la información de la biblioteca pública de manera profesional.
+      </p>
+    </div>
+  </section>
+  
+</section>
 
-        <p class="hero-desc">
-          Plataforma diseñada para registrar libros, gestionar usuarios y controlar préstamos,
-          permitiendo organizar la información de la biblioteca de manera clara, rápida y segura.
+  <section class="services-section">
+  <div class="wrapper">
+
+    <h2>Módulos principales</h2>
+    <p class="subtitle">Accede a las funciones del sistema</p>
+
+    <div class="services-list">
+
+      <a href="../html/libros.html" class="service-card">
+        <div class="image-container">
+          <img src="../img/icon-camera.png" alt="Icono de libros">
+        </div>
+
+        <h3>Gestión de libros</h3>
+
+        <p>
+          Registra, consulta, edita y elimina libros del catálogo bibliotecario.
         </p>
 
-        <div class="hero-actions">
-          <a href="libros.html" class="btn-primary">Gestionar libros</a>
-          <a href="prestamos.html" class="btn-secondary">Ver préstamos</a>
+        <span>Ir al módulo</span>
+      </a>
+
+      <a href="../html/usuarios.html" class="service-card">
+        <div class="image-container">
+          <img src="../img/icon-pencil.png" alt="Icono de usuarios">
         </div>
-      </div>
 
-      <div class="hero-visual">
-        <div class="stats-card">
+        <h3>Gestión de usuarios</h3>
 
-          <div class="stat">
-            <span class="stat-number">120+</span>
-            <span class="stat-label">Libros registrados</span>
-          </div>
+        <p>
+          Administra usuarios activos e inactivos vinculados a la biblioteca.
+        </p>
 
-          <div class="stat-divider"></div>
-
-          <div class="stat">
-            <span class="stat-number">45</span>
-            <span class="stat-label">Usuarios activos</span>
-          </div>
-
-          <div class="stat-divider"></div>
-
-          <div class="stat">
-            <span class="stat-number">18</span>
-            <span class="stat-label">Préstamos en curso</span>
-          </div>
-
+        <span>Ir al módulo</span>
+      </a>
+    
+      <a href="../html/prestamos.html" class="service-card">
+        <div class="image-container">
+          <img src="../img/icon-film.png" alt="Icono de préstamos">
         </div>
+
+        <h3>Control de préstamos</h3>
+
+        <p>
+          Registra préstamos, fechas de devolución y estado de los ejemplares.
+        </p>
+
+        <span>Ir al módulo</span>
+      </a>
+
+    </div>
+  </div>
+  <br>
+  <br>
+    <section class="text-section library-ideas-section">
+  <div class="wrapper">
+
+    <div class="image align-left">
+      <img src="../img/light-bulb.png" alt="Ideas para la gestión bibliotecaria">
+    </div>
+
+    <div class="text align-left">
+      <h2>Organiza tu biblioteca con claridad</h2>
+
+      <p class="subtitle">
+        Información ordenada, rápida y segura
+      </p>
+
+      <p>
+        El sistema permite centralizar la gestión de libros, usuarios y préstamos
+        en una sola plataforma, facilitando el control del inventario y el seguimiento
+        de los ejemplares disponibles o prestados.
+      </p>
+
+      <p>
+        Cada módulo fue diseñado para que la administración bibliotecaria sea más
+        sencilla, visual y eficiente, conservando la información conectada con la base
+        de datos.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+  <section class="features-section">
+    <div class="wrapper">
+      <div class="feature-grid">
+
+        <div class="feature-box">
+          <h3>Organización</h3>
+          <p>Control claro del inventario, usuarios y préstamos registrados.</p>
+        </div>
+
+        <div class="feature-box">
+          <h3>Rapidez</h3>
+          <p>Consulta y gestión de información desde módulos independientes.</p>
+        </div>
+
+        <div class="feature-box">
+          <h3>Seguimiento</h3>
+          <p>Visualización del estado de libros, usuarios y préstamos.</p>
+        </div>
+
+        <div class="feature-box">
+          <h3>Conexión</h3>
+          <p>Base de datos conectada mediante backend y Turso.</p>
+        </div>
+
       </div>
+    </div>
+  </section>
 
-    </section>
+  <section class="call-section">
+    <div class="wrapper">
+      <h2>Empieza a gestionar tu biblioteca</h2>
+      <p class="subtitle">Selecciona un módulo para continuar</p>
 
-    <section class="sections">
-      <h2 class="sections-title">Módulos principales</h2>
-
-      <div class="cards-grid">
-
-        <a href="libros.html" class="section-card">
-          <div class="card-icon books">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
-            </svg>
-          </div>
-
-          <h3 class="card-title">Gestión de libros</h3>
-          <p class="card-desc">
-            Registra, consulta, edita y elimina libros. Controla datos como título, autor,
-            categoría, año de publicación y estado del libro.
-          </p>
-          <span class="card-link">Ir al módulo</span>
-        </a>
-
-        <a href="usuarios.html" class="section-card">
-          <div class="card-icon users">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </div>
-
-          <h3 class="card-title">Gestión de usuarios</h3>
-          <p class="card-desc">
-            Administra la información de las personas que hacen uso de la biblioteca y solicitan
-            libros en préstamo.
-          </p>
-          <span class="card-link">Ir al módulo</span>
-        </a>
-
-        <a href="prestamos.html" class="section-card">
-          <div class="card-icon loans">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 11l3 3L22 4"></path>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-            </svg>
-          </div>
-
-          <h3 class="card-title">Control de préstamos</h3>
-          <p class="card-desc">
-            Registra préstamos, fechas de devolución y estados para llevar seguimiento de los libros
-            entregados a los usuarios.
-          </p>
-          <span class="card-link">Ir al módulo</span>
-        </a>
-
+      <div class="buttons">
+        <a href="../html/libros.html" class="button-1">Libros</a>
+        <a href="../html/usuarios.html" class="button-2">Usuarios</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
 
   <footer class="footer">
     <p>Biblioteca Pública | Sistema de Gestión</p>
   </footer>
 
- 
-    <script src="../js/header.js"></script>
+  <script src="../js/header.js"></script>
 </body>
 </html>
